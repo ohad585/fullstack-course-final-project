@@ -1,24 +1,25 @@
 import React, { FC, useState } from "react";
 import { View, Text ,StyleSheet ,Image, TextInput, TouchableHighlight, ScrollView} from "react-native";
-import StudentModel,{Student} from "../model/student_model"
+import UserModel,{User} from "../model/user_model"
 import COLORS from "../constants/colors";
 import ActivityIndicator from "./component/custom_activity_indicator";
 
-const Add_Student: FC<{ navigation: any; route: any }> = ({
+const Add_User: FC<{ navigation: any; route: any }> = ({
     navigation,
     route,
   }) => {
     const [isLoading,setIsLoading] =useState<boolean>(false)
-    const [id,setId] = useState<String>("")
-    const [name,setName] = useState<String>("")
+    const [UserName,setUserName] = useState<String>("")
+    const [Password,setPassword] = useState<String>("")
+
     const onSave = async ()=>{
       setIsLoading(true)
-      if(id!="" && name !=""){
-        const std:Student = {
-          id:id,
-          name:name
+      if(UserName!="" && Password !="" ){
+        const user:User = {
+            user_name:UserName,
+          password:Password
         }
-        await StudentModel.addStudent(std)
+        await UserModel.addUser(user)
         setIsLoading(false)
         navigation.goBack()
       }
@@ -27,8 +28,9 @@ const Add_Student: FC<{ navigation: any; route: any }> = ({
       <ScrollView>
       <View style={styles.container}>
        <Image style={styles.image} source={require("../assets/avatar.jpeg")}></Image>
-       <TextInput style={styles.textInput} onChangeText={setId} placeholder="ID" keyboardType="default"></TextInput>
-       <TextInput style={styles.textInput} onChangeText={setName} placeholder="Name" keyboardType="default"></TextInput>
+       <TextInput style={styles.textInput} onChangeText={setUserName} placeholder="UserName" keyboardType="default"></TextInput>
+       <TextInput style={styles.textInput} onChangeText={setPassword} placeholder="Password" keyboardType="default"></TextInput>
+
        <TouchableHighlight
         underlayColor={COLORS.clickBackground} 
         onPress={()=>{ 
@@ -82,4 +84,4 @@ const Add_Student: FC<{ navigation: any; route: any }> = ({
       }
   })
 
-  export default Add_Student
+  export default Add_User

@@ -6,16 +6,19 @@ const Details: FC<{ navigation: any; route: any }> = ({
     route,
   }) => {
 
-    const [studentId ,setStudentId] = useState<String>("")
+    const [PostId ,setPostId] = useState<String>("")
+    const [PostName ,setPostName] = useState<String>("")
+    const [PostText ,sePostText] = useState<String>("")
     React.useEffect(()=>{
         if(route.params?.id){
-            setStudentId(route.params.id)
+            setPostId(route.params.id)
         }
     })
 
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Details: {studentId}</Text>
+        <Text>Author: {PostName}</Text>
+        <Text>Text: {PostText}</Text>
       </View>
     );
   };
