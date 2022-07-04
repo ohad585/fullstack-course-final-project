@@ -26,6 +26,9 @@ app.use("/post", post_routes);
 import auth_routes from "./routes/auth_routes";
 app.use("/auth", auth_routes);
 
+import user_routes from "./routes/user_routes"
+app.use("/user",user_routes)
+
 // import swaggerUI from "swagger-ui-express";
 // import swaggerJsDoc from "swagger-jsdoc";
 

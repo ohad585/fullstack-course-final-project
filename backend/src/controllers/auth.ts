@@ -182,11 +182,55 @@ import jwt from "jsonwebtoken";
     }
   };
   
+  /**
+   * facebookLogin - called after a succesful login to facebook , the user is saved
+   * to the DB(if not saved already) and assigned tokens .
+   * @param req html request
+   * @param res html response
+   * @returns id,access_token,refresh_token
+   */
+  const facebookLogin =async (req: Request, res: Response) => {
+    const email = req.body.email;
+    try{
+      var user = await User.findOne({ email: email });
+      if (user == null) {
+        //save user to db
+        user = new User({
+            email:email,
+            password:"FaceBook"
+        })
+        user = await user.save();  
+      }
+      //login - create access token
+      const accessToken = await jwt.sign(
+        { _id: user._id },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: process.env.TOKEN_EXPIRATION }
+      );
+      const refreshToken = await jwt.sign(
+        { _id: user._id },
+        process.env.REFRESH_TOKEN_SECRET,
+        {}
+      );
+      user.refreshToken = refreshToken;
+      await user.save();
+      res.status(StatusCodes.OK).send({
+        access_token: accessToken,
+        refresh_token: refreshToken,
+        _id: user._id,
+      });
+    }catch(err){
+      return res.status(StatusCodes.BAD_REQUEST).send({ error: err.message });
+    }
+    
+  }
+
   export = {
     register,
     login,
     renewToken,
     test,
+    facebookLogin
   };
   
 
