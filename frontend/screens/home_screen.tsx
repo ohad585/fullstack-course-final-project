@@ -10,29 +10,27 @@ import {
 
 import COLORS from "../constants/colors";
 
-import StudentModel,{Student} from "../model/student_model"
-
 import  ActivityIndicator  from "./component/custom_activity_indicator";
 
-const StudentListRow: FC<{ id: String; name: String ,onItemClick: (id:String)=>void }> = ({ id, name,onItemClick }) => {
-  return (
-    <TouchableHighlight onPress={()=>{onItemClick(id)}} underlayColor ={COLORS.clickBackground} >
-      <View style={styles.list_row_container}>
-        <Image
-          source={require("../assets/avatar.jpeg")}
-          style={styles.list_row_image}
-        ></Image>
-        <View style={styles.list_row_text_container}>
-          <Text style={styles.list_row_name}>{name}</Text>
-          <Text style={styles.list_row_id}>{id}</Text>
-        </View>
-      </View>
-    </TouchableHighlight>
-  );
-};
+// const StudentListRow: FC<{ id: String; name: String ,onItemClick: (id:String)=>void }> = ({ id, name,onItemClick }) => {
+//   return (
+//     <TouchableHighlight onPress={()=>{onItemClick(id)}} underlayColor ={COLORS.clickBackground} >
+//       <View style={styles.list_row_container}>
+//         <Image
+//           source={require("../assets/avatar.jpeg")}
+//           style={styles.list_row_image}
+//         ></Image>
+//         <View style={styles.list_row_text_container}>
+//           <Text style={styles.list_row_name}>{name}</Text>
+//           <Text style={styles.list_row_id}>{id}</Text>
+//         </View>
+//       </View>
+//     </TouchableHighlight>
+//   );
+// };
 
 const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
-  const [data,setData] = useState<Array<Student>>();
+  //const [data,setData] = useState<Array<Student>>();
   const [isLoading,setIsLoading] = useState<boolean>(false);
 
 
@@ -51,16 +49,16 @@ const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
   
   const reloadData = async ()=>{
     setIsLoading(true)
-    let studentData:any = await StudentModel.getAllStudent()
+    //let studentData:any = await StudentModel.getAllStudent()
     
-    setData(studentData)
+    //setData(studentData)
     setIsLoading(false)
   }
 
 
   return (
     <View style={styles.home_container}>
-      <FlatList
+      {/* <FlatList
         data={data}
         keyExtractor={(item) => {
           return item.id.toString();
@@ -68,7 +66,7 @@ const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
         renderItem={({ item }) => (
           <StudentListRow id={item.id} name={item.name} onItemClick={openDetails}></StudentListRow>
         )}
-      ></FlatList>
+      ></FlatList> */}
       <View style={styles.activity_indicator}>
       <ActivityIndicator visible={isLoading} ></ActivityIndicator>
       </View>

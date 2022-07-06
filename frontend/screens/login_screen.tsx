@@ -2,6 +2,9 @@ import React ,{ FC, useState } from "react";
 import { View, Text ,StyleSheet ,Image, TextInput, TouchableHighlight, ScrollView,Button} from "react-native";
 import UserModle,{User} from "../model/user_model"
 import COLORS from "../constants/colors";
+import FacebookLogin from "./component/custom_facebook_login_button"
+import {ReactFacebookLoginInfo} from "react-facebook-login"
+
 
 
 const Login: FC<{ navigation: any; route: any }> = ({
@@ -19,7 +22,11 @@ const Login: FC<{ navigation: any; route: any }> = ({
         if(route.params?.id){
             setUserName(route.params.id)
         }
-    })
+      })
+    }
+
+    const facebookLogin = (response:ReactFacebookLoginInfo)=>{
+      console.log(response)
     }
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -27,9 +34,9 @@ const Login: FC<{ navigation: any; route: any }> = ({
         <TextInput style={styles.textInput} onChangeText={setUserName} placeholder="UserName" keyboardType="default"></TextInput>
         <TextInput style={styles.textInput} onChangeText={setPassword} placeholder="Password" keyboardType="default"></TextInput>
         //log in with facebook
-        <Button onClick={()=>}>Login with Faceook</Button>
+        <FacebookLogin responseFacebook={facebookLogin}></FacebookLogin>
         //log in with google
-        <Button onClick={()=>}>Login with Google</Button>
+        
 
         <TouchableHighlight
         underlayColor={COLORS.clickBackground} 
@@ -59,6 +66,9 @@ const Login: FC<{ navigation: any; route: any }> = ({
       margin:12,
       backgroundColor:"grey",
       borderRadius:50
+    },
+    buttonText:{
+
     }
 })
 

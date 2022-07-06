@@ -8,8 +8,10 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 import HomeScreen from "./screens/home_screen"
 import AboutScreen from "./screens/about_screen"
-import DetailsScreen from "./screens/details_screen"
-import AddStudentScreen from "./screens/add_student_screen";
+//import DetailsScreen from "./screens/details_screen"
+//import AddStudentScreen from "./screens/add_student_screen";
+import LoginScreen from "./screens/login_screen"
+import RegistrationScreen from "./screens/registration_screen"
 import COLORS from "./constants/colors";
 
 
@@ -34,8 +36,8 @@ const HomeStackScreen: FC<{ navigation: any; route: any }> = ({ navigation, rout
       <HomeStack.Screen name="Home" component={HomeScreen} options={{
           headerRight: ()=>{return (<TopBarAddButton onClick={openAddStudent}></TopBarAddButton>)}
           }} />
-      <HomeStack.Screen name="Details" component={DetailsScreen} />
-      <HomeStack.Screen name="AddStudent" component={AddStudentScreen} />
+      <HomeStack.Screen name="Login" component={LoginScreen} />
+      <HomeStack.Screen name="Register" component={RegistrationScreen} />
     </HomeStack.Navigator>
   );
 };
@@ -72,5 +74,6 @@ const App: FC = () => {
 const styles = StyleSheet.create({
 
 })
+
 
 export default App;
