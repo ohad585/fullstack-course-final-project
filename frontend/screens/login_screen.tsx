@@ -3,7 +3,7 @@ import { View, Text ,StyleSheet ,Image, TextInput, TouchableHighlight, ScrollVie
 import UserModle,{User} from "../model/user_model"
 import COLORS from "../constants/colors";
 import FacebookLogin from "./component/custom_facebook_login_button"
-import {ReactFacebookLoginInfo} from "react-facebook-login"
+// import {ReactFacebookLoginInfo} from "react-facebook-login"
 
 
 
@@ -25,16 +25,16 @@ const Login: FC<{ navigation: any; route: any }> = ({
       })
     }
 
-    const facebookLogin = (response:ReactFacebookLoginInfo)=>{
-      console.log(response)
-    }
+    // const facebookLogin = (response:ReactFacebookLoginInfo)=>{
+    //   console.log(response)
+    // }
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>Login Page</Text>
         <TextInput style={styles.textInput} onChangeText={setUserName} placeholder="UserName" keyboardType="default"></TextInput>
         <TextInput style={styles.textInput} onChangeText={setPassword} placeholder="Password" keyboardType="default"></TextInput>
         //log in with facebook
-        <FacebookLogin responseFacebook={facebookLogin}></FacebookLogin>
+        {/* <FacebookLogin responseFacebook={facebookLogin}></FacebookLogin> */}
         //log in with google
         
 
