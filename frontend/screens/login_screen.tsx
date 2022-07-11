@@ -2,7 +2,7 @@ import React ,{ FC, useState } from "react";
 import { View, Text ,StyleSheet ,Image, TextInput, TouchableHighlight, ScrollView,Button} from "react-native";
 import UserModle,{User} from "../model/user_model"
 import COLORS from "../constants/colors";
-import FacebookLogin from "./component/custom_facebook_login_button"
+// import FacebookLogin from "./component/custom_facebook_login_button"
 // import {ReactFacebookLoginInfo} from "react-facebook-login"
 
 
@@ -16,13 +16,15 @@ const Login: FC<{ navigation: any; route: any }> = ({
     const [Password,setPassword] = useState<String>("")
 
     const onLoginPress = async ()=>{
+      console.log(UserName + " 4 " +Password );
+
       setIsLoading(true)
-      React.useEffect(()=>{
-        //get the right user
-        if(route.params?.id){
-            setUserName(route.params.id)
-        }
-      })
+      const user:User ={
+        email:UserName,
+        password:Password
+      } 
+      UserModle.loginUser(user)
+      
     }
 
     // const facebookLogin = (response:ReactFacebookLoginInfo)=>{
@@ -33,9 +35,9 @@ const Login: FC<{ navigation: any; route: any }> = ({
         <Text>Login Page</Text>
         <TextInput style={styles.textInput} onChangeText={setUserName} placeholder="UserName" keyboardType="default"></TextInput>
         <TextInput style={styles.textInput} onChangeText={setPassword} placeholder="Password" keyboardType="default"></TextInput>
-        //log in with facebook
-        {/* <FacebookLogin responseFacebook={facebookLogin}></FacebookLogin> */}
-        //log in with google
+        {/* //log in with facebook */}
+        {/* <FacebookLogin></FacebookLogin> */}
+        {/* //log in with google */}
         
 
         <TouchableHighlight

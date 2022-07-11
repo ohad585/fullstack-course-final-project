@@ -65,6 +65,9 @@ const App: FC = () => {
       >
         <Tab.Screen name="HomeStack" component={HomeStackScreen} options={{headerShown :false}}></Tab.Screen>
         <Tab.Screen name="About" component={AboutScreen}></Tab.Screen>
+        <Tab.Screen name="Login" component={LoginScreen}></Tab.Screen>
+        <Tab.Screen name="Register" component={RegistrationScreen}></Tab.Screen>
+
       </Tab.Navigator>
     </NavigationContainer>
   );

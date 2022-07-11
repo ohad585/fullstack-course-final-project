@@ -16,7 +16,7 @@ const Add_User: FC<{ navigation: any; route: any }> = ({
       setIsLoading(true)
       if(UserName!="" && Password !="" ){
         const user:User = {
-            user_name:UserName,
+          email:UserName,
           password:Password
         }
         await UserModel.addUser(user)

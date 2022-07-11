@@ -8,7 +8,7 @@ const getAllUsers = async () => {
   if(res.data){
     res.data.forEach((element) => {
       const user:User ={
-        user_name: element.userName,
+        email: element.userName,
         password: element.password,
       }
       users.push(user)
@@ -20,8 +20,8 @@ const getAllUsers = async () => {
   return users
 };
 const addUser = async (user: User) => {
-  const res = await apiClient.post("/user",{
-    user_name:user.user_name,
+  const res = await apiClient.post("/auth/register",{
+    email:user.email,
     password:user.password
   });
   if(res.ok){
@@ -31,9 +31,21 @@ const addUser = async (user: User) => {
     console.log("addUser fail");
   }};
 
-
+const loginUser =async (user:User) => {
+  const res = await apiClient.post("/auth/login",{
+    email:user.email,
+    password:user.password
+  });
+  if(res.ok){
+    console.log("Login success");
+    
+  }else {
+    console.log("Login fail");
+  }
+}
 export default {
   getAllUsers,
   addUser,
+  loginUser,
 };
 
