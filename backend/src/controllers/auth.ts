@@ -66,9 +66,10 @@ import jwt from "jsonwebtoken";
  * @param {http response} res 
  */
  const login = async (req : Request, res: Response) => {
-    console.log('login')
     const email = req.body.email;
     const password = req.body.password;
+    console.log('login '+email+" "+password)
+
     if (email == null || password == null) {
       return res
         .status(StatusCodes.BAD_REQUEST)
@@ -83,7 +84,8 @@ import jwt from "jsonwebtoken";
           .status(StatusCodes.BAD_REQUEST)
           .send({ error: "wrong email or password" });
       }
-  
+      console.log("Found user "+user.email+" "+user.passowrd);
+      
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
         return res
