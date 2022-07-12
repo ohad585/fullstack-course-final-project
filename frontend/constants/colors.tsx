@@ -1,5 +1,7 @@
 
 const colors = {
-    clickBackground : "cyan"
+    clickBackground: 'gainsboro',
+    button_icon: 'red'
 }
+
 export default colors

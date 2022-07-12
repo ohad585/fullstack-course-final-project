@@ -5,7 +5,7 @@ import authenticate from "../common/auth_middleware";
 
 import multer from "multer"
 
-const base = "http://192.168.0.101:3000/";
+const base = "http://10.0.0.20:19000/";
 const profile_storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads/profile/");

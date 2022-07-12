@@ -13,6 +13,7 @@ import AboutScreen from "./screens/about_screen"
 import LoginScreen from "./screens/login_screen"
 import RegistrationScreen from "./screens/registration_screen"
 import COLORS from "./constants/colors";
+import AddPostScreen from "./screens/add_post_screen"
 
 
 const Tab = createBottomTabNavigator();
@@ -28,16 +29,18 @@ const TopBarAddButton: FC<{onClick:()=>void}> = ({onClick})=>{
 }
 
 const HomeStackScreen: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
-    const openAddStudent = ()=>{
-        navigation.navigate("AddStudent")
+    const openAddPost = ()=>{
+        navigation.navigate("Add Post")
     }
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen name="Home" component={HomeScreen} options={{
-          headerRight: ()=>{return (<TopBarAddButton onClick={openAddStudent}></TopBarAddButton>)}
+          headerRight: ()=>{return (<TopBarAddButton onClick={openAddPost}></TopBarAddButton>)}
           }} />
       <HomeStack.Screen name="Login" component={LoginScreen} />
       <HomeStack.Screen name="Register" component={RegistrationScreen} />
+      <HomeStack.Screen name="Add Post" component={AddPostScreen} />
+
     </HomeStack.Navigator>
   );
 };
@@ -50,15 +53,18 @@ const App: FC = () => {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             if (route.name === "About") {
-              iconName = focused
-                ? "information-circle"
-                : "information-circle-outline";
-            } else if (route.name === "HomeStack") {
+              iconName = focused? "information-circle": "information-circle-outline";
+            } 
+            else if (route.name === "HomeStack") {
               iconName = focused ? "home" : "home-outline";
+            }
+            else if (route.name === "Login") {
+              iconName = focused ? "log-in-outline" : "log-in-outline";
             }
             // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
-          },
+          
+        },
           tabBarActiveTintColor: "tomato",
           tabBarInactiveTintColor: "gray",
         })}
