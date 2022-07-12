@@ -1,4 +1,4 @@
-import server from './server'
+import server from './rest_server'
 
 import {initSocketServer} from "./socket_server"
 

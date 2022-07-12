@@ -7,6 +7,7 @@ import COLORS from "../constants/colors";
 
 
 
+
 const Login: FC<{ navigation: any; route: any }> = ({
     navigation,
     route,
@@ -26,7 +27,6 @@ const Login: FC<{ navigation: any; route: any }> = ({
       UserModle.loginUser(user)
       
     }
-
     // const facebookLogin = (response:ReactFacebookLoginInfo)=>{
     //   console.log(response)
     // }
@@ -38,8 +38,6 @@ const Login: FC<{ navigation: any; route: any }> = ({
         {/* //log in with facebook */}
         {/* <FacebookLogin></FacebookLogin> */}
         {/* //log in with google */}
-        
-
         <TouchableHighlight
         underlayColor={COLORS.clickBackground} 
         onPress={()=>{ 

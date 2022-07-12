@@ -11,7 +11,7 @@ const getAllPosts = async () => {
         id: element.sender,
         name: element.message,
         text: element.text,
-        imageUri:element.imageUri,
+        imageUrl: element.imageUri
       }
       posts.push(p)
     });
@@ -39,7 +39,7 @@ const addPost = async (p: Post) => {
     console.log("uploadImage")
     const formData = new FormData()
     formData.append('file',{name: 'name', type:'image/jpeg', uri: imageUri})
-    let url = '/file/file'
+    let url = '/file/post_file'
     const res = await apiClient.post(url,formData)
     if (res.ok){
         console.log("upload Image passed " + res.data)

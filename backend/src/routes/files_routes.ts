@@ -5,7 +5,7 @@ import authenticate from "../common/auth_middleware";
 
 import multer from "multer"
 
-const base = "http://10.0.0.20:19000/";
+const base = "http://192.168.0.103:19000/";
 const profile_storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads/profile/");
@@ -41,7 +41,7 @@ router.post(
 
 router.post(
     "/post_file",
-    upload_profile.single("file"),
+    upload_post.single("file"),
     (req: Request, res: Response, next: NextFunction) => {
       //console.log(req.body)
       console.log("router.post(/file/post: " + base + (req as MulterRequest).file.path);

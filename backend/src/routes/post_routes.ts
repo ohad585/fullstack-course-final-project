@@ -6,7 +6,7 @@ import authenticate from '../common/auth_middleware'
 
 router.get('/',getAllPosts)
 
-router.post('/',authenticate,createNewPost)
+router.post('/',createNewPost)
 
 router.get('/:id',getPostById)
 

@@ -57,7 +57,7 @@ export const getPostById = async (req: Request, res: Response) => {
  */
 export const createNewPost = async (req: Request | CtrlReq, res: Response | CtrlRes) => {
   console.log(req.body);
-  const sender = req.body._id;
+  const sender = req.body.sender;
   const post = new Post({
     message: req.body.message,
     sender: sender,
@@ -65,8 +65,11 @@ export const createNewPost = async (req: Request | CtrlReq, res: Response | Ctrl
 
   try {
     const newPost = await post.save();
+
+    console.log("New post saved");
+    
     //send notification to all other users
-    broadcastPostMessage({ sender: sender, message: req.body.message, _id: post._id})
+    //broadcastPostMessage({ sender: sender, message: req.body.message, _id: post._id})
     res.status(200).send({ sender: sender, message: req.body.message, _id: post._id });
   } catch (err) {
     res.status(400).send({

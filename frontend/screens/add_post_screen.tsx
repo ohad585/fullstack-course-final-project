@@ -18,7 +18,7 @@ const Add_Post: FC<{ navigation: any; route: any }> = ({
 
     const onSave = async ()=>{
       setIsLoading(true)
-      if(id!="" && name !="" && text!=""){
+      if(id!="" && name !=""){
         const p:Post = {
           id:id,
           name:name,
