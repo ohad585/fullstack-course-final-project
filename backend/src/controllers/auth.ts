@@ -15,6 +15,8 @@ import jwt from "jsonwebtoken";
     //validate email/password
     const email = req.body.email;
     const password = req.body.password;
+    const imageUri = req.body.imageUri;
+    console.log("Saving user "+email+" "+password+" "+imageUri)
   
     if (
       email == null ||
@@ -37,6 +39,8 @@ import jwt from "jsonwebtoken";
     });
     try {
       const newUser = await user.save();
+      console.log("New user saved");
+      
       //login - create access token
       const accessToken = await jwt.sign(
         { _id: newUser._id },
@@ -50,6 +54,8 @@ import jwt from "jsonwebtoken";
       );
       newUser.refreshToken = refreshToken;
       await newUser.save();
+      console.log("New user saved with refresh and access tokens");
+
       res.status(StatusCodes.OK).send({
         access_token: accessToken,
         refresh_token: refreshToken,

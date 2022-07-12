@@ -4,6 +4,7 @@ import UserApi from "./user_api"
 export type User = {
   email: String;
   password: String;
+  imageUri: String;
 };
 
 
@@ -21,8 +22,14 @@ const loginUser =async (user:User) => {
   
   await UserApi.loginUser(user)
 }
+const uploadImage =async (imageUri:String) => {
+  console.log("User upload image ")
+  return UserApi.uploadImage(imageUri)
+}
+
 export default {
   getAllUsers,
   addUser,
   loginUser,
+  uploadImage,
 };

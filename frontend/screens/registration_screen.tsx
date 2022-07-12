@@ -3,6 +3,7 @@ import { View, Text ,StyleSheet ,Image, TextInput, TouchableHighlight, ScrollVie
 import UserModel,{User} from "../model/user_model"
 import COLORS from "../constants/colors";
 import ActivityIndicator from "./component/custom_activity_indicator";
+import CustomImagePicker from "./component/custom_image_picker";
 
 const Add_User: FC<{ navigation: any; route: any }> = ({
     navigation,
@@ -11,27 +12,43 @@ const Add_User: FC<{ navigation: any; route: any }> = ({
     const [isLoading,setIsLoading] =useState<boolean>(false)
     const [UserName,setUserName] = useState<String>("")
     const [Password,setPassword] = useState<String>("")
+    const [imageUri,setImageUri] = useState<String>("")
+
 
     const onSave = async ()=>{
       setIsLoading(true)
       if(UserName!="" && Password !="" ){
         const user:User = {
           email:UserName,
-          password:Password
+          password:Password,
+          imageUri: ''
         }
+        if(imageUri != ""){
+          console.log("saving image")
+          const url = await UserModel.uploadImage(imageUri)
+          user.imageUri = url
+          console.log("saving image : " + url) 
+      }
         await UserModel.addUser(user)
         setIsLoading(false)
         navigation.goBack()
       }
     }
+
+    const onImageSelected = (uri:String)=>{
+      console.log("onImageSelected " + uri)
+      setImageUri(uri)
+  }
     return (
       <ScrollView>
       <View style={styles.container}>
-       <Image style={styles.image} source={require("../assets/avatar.jpeg")}></Image>
-       <TextInput style={styles.textInput} onChangeText={setUserName} placeholder="UserName" keyboardType="default"></TextInput>
-       <TextInput style={styles.textInput} onChangeText={setPassword} placeholder="Password" keyboardType="default"></TextInput>
+      <View style={styles.image} >
+         <CustomImagePicker onImageSelected={onImageSelected}></CustomImagePicker>
+      </View>
+      <TextInput style={styles.textInput} onChangeText={setUserName} placeholder="UserName" keyboardType="default"></TextInput>
+      <TextInput style={styles.textInput} onChangeText={setPassword} placeholder="Password" keyboardType="default"></TextInput>
 
-       <TouchableHighlight
+      <TouchableHighlight
         underlayColor={COLORS.clickBackground} 
         onPress={()=>{ 
           onSave()
