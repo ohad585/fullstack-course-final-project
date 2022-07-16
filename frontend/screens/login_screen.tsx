@@ -4,6 +4,7 @@ import UserModle,{User} from "../model/user_model"
 import COLORS from "../constants/colors";
 // import FacebookLogin from "./component/custom_facebook_login_button"
 // import {ReactFacebookLoginInfo} from "react-facebook-login"
+import GoogleLoginBtn from "./component/custom_google_login_button";
 
 
 
@@ -22,7 +23,8 @@ const Login: FC<{ navigation: any; route: any }> = ({
       setIsLoading(true)
       const user:User ={
         email:UserName,
-        password:Password
+        password:Password,
+        imageUri:""
       } 
       UserModle.loginUser(user)
       
@@ -46,6 +48,7 @@ const Login: FC<{ navigation: any; route: any }> = ({
         style={styles.button}>
          <Text style={styles.buttonText}>Login</Text>
        </TouchableHighlight>
+       <GoogleLoginBtn></GoogleLoginBtn>
       </View>
     );
   };

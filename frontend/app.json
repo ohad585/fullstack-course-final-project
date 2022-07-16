@@ -1,10 +1,11 @@
 {
   "expo": {
     "name": "frontend",
-    "slug": "frontend",
+    "slug": "fullstack-course-final-project",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "owner": "ohad5855",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -21,6 +22,7 @@
       "supportsTablet": true
     },
     "android": {
+      "android.package":"com.finalproject.fullstack",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
