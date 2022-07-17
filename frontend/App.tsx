@@ -14,6 +14,8 @@ import LoginScreen from "./screens/login_screen"
 import RegistrationScreen from "./screens/registration_screen"
 import COLORS from "./constants/colors";
 import AddPostScreen from "./screens/add_post_screen"
+import UserDetailsScreen from "./screens/user_details_screen"
+
 
 
 const Tab = createBottomTabNavigator();
@@ -40,6 +42,8 @@ const HomeStackScreen: FC<{ navigation: any; route: any }> = ({ navigation, rout
       <HomeStack.Screen name="Login" component={LoginScreen} />
       <HomeStack.Screen name="Register" component={RegistrationScreen} />
       <HomeStack.Screen name="Add Post" component={AddPostScreen} />
+      <HomeStack.Screen name="User Details" component={UserDetailsScreen} />
+
 
     </HomeStack.Navigator>
   );
@@ -72,6 +76,8 @@ const App: FC = () => {
         <Tab.Screen name="About" component={AboutScreen}></Tab.Screen>
         <Tab.Screen name="Login" component={LoginScreen}></Tab.Screen>
         <Tab.Screen name="Register" component={RegistrationScreen}></Tab.Screen>
+        <Tab.Screen name="UserDetails" component={UserDetailsScreen}></Tab.Screen>
+
 
       </Tab.Navigator>
     </NavigationContainer>

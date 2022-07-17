@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { View, Text } from "react-native";
 
-const Details: FC<{ navigation: any; route: any }> = ({
+const PostDetails: FC<{ navigation: any; route: any }> = ({
     navigation,
     route,
   }) => {
@@ -23,4 +23,4 @@ const Details: FC<{ navigation: any; route: any }> = ({
     );
   };
 
-  export default Details
+  export default PostDetails
