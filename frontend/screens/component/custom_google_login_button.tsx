@@ -9,6 +9,7 @@ const GoogleLoginBtn:React.FC = ()=> {
   const [request, response, promptAsync] = Google.useAuthRequest({
     expoClientId: '508060421836-kd7fjltjf8v2o0l7dp6gltatke8rd8pa.apps.googleusercontent.com',
     androidClientId: "508060421836-94bm4uhg34q5po16kchuoqo91uhbhm29.apps.googleusercontent.com",
+    iosClientId: "508060421836-mlugv1clgv1qpqai8uts7qhfb0tbfsg3.apps.googleusercontent.com",
   });
 
   

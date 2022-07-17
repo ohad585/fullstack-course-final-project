@@ -19,7 +19,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier":"com.finalproject.fullstack"
     },
     "android": {
       "android.package":"com.finalproject.fullstack",
