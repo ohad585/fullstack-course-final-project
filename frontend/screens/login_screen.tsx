@@ -26,7 +26,10 @@ const Login: FC<{ navigation: any; route: any }> = ({
         password:Password,
         imageUri:""
       } 
-      UserModle.loginUser(user)
+      const usrC = await UserModle.loginUser(user)
+      if(usrC==null){
+        alert("Login failed")
+      }else navigation.navigate("Home")
     }
 
     const googleLogin =async (accessToken:String)=>{
@@ -40,12 +43,15 @@ const Login: FC<{ navigation: any; route: any }> = ({
         password : "google",
         imageUri:data.picture
       }
-      UserModle.addGoogleUser(usr)
+      const usrC = await UserModle.addGoogleUser(usr)
+      if(usrC==null){
+        alert("Google Login failed")
+      }else {
+        navigation.navigate("Home")
+      }
     }
 
-    const facebookLogin =async (accessToken:String) => {
-      
-    }
+    
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>Login Page</Text>

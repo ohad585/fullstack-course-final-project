@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { View, Text ,StyleSheet ,Image, TextInput, TouchableHighlight, ScrollView} from "react-native";
-import UserModel,{User} from "../model/user_model"
+import UserModel,{User, UserCredentials} from "../model/user_model"
 import COLORS from "../constants/colors";
 import ActivityIndicator from "./component/custom_activity_indicator";
 import CustomImagePicker from "./component/custom_image_picker";
@@ -29,9 +29,13 @@ const Add_User: FC<{ navigation: any; route: any }> = ({
           user.imageUri = url
           console.log("saving image : " + url) 
       }
-        await UserModel.addUser(user)
+        const usrC = await UserModel.addUser(user)
         setIsLoading(false)
-        navigation.goBack()
+        if(usrC==null){
+          alert("Somthing went wrong")
+        }else{
+          navigation.navigate("Home")
+        }
       }
     }
 

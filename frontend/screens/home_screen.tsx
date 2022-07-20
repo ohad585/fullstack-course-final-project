@@ -33,6 +33,7 @@ const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
   //const [data,setData] = useState<Array<Student>>();
   const [isLoading,setIsLoading] = useState<boolean>(false);
 
+  
 
   const openDetails = (id:String) =>{
       console.log("On press "+ id); 
@@ -44,7 +45,6 @@ const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
       console.log("screen in focus")
       reloadData() 
     })
-  
   },[navigation])
   
   const reloadData = async ()=>{

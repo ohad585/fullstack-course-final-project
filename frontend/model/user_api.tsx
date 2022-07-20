@@ -1,5 +1,5 @@
 import apiClient from "./ApiClient";
-import { User } from "./user_model";
+import { User, UserCredentials } from "./user_model";
 
 const getAllUsers = async () => {
   const res = await apiClient.get("/user/");
@@ -26,10 +26,18 @@ const addUser = async (user: User) => {
     imageUri:user.imageUri
   });
   if(res.ok){
-    console.log("addUser success");
+    
+    const usrC:UserCredentials = {
+      access_token:res.data.access_token,
+      refresh_token:res.data.refresh_token,
+      _id:res.data._id
+    }
+    console.log("addUser success "+usrC._id);
+    return usrC
     
   }else {
     console.log("addUser fail");
+    return null
   }};
 
   const addGoogleUser = async (usr: User) => {
@@ -41,7 +49,15 @@ const addUser = async (user: User) => {
       imageUri:usr.imageUri
     });
     if(res.ok){
-      console.log("addGoogleUser success");
+      console.log(res.data)
+      const usrC:UserCredentials = {
+        access_token:res.data.access_token,
+        refresh_token:res.data.refresh_token,
+        _id:res.data._id
+      }
+      console.log("addGoogleUser success "+usrC._id);
+
+      return usrC
       
     }else {
       console.log("addGoogleUser fail");
@@ -53,10 +69,17 @@ const loginUser =async (user:User) => {
     password:user.password
   });
   if(res.ok){
-    console.log("Login success");
-    
+    console.log(res.data)
+    const usrC:UserCredentials = {
+      access_token:res.data.access_token,
+      refresh_token:res.data.refresh_token,
+      _id:res.data._id
+    }
+    console.log("Login success "+usrC._id);
+    return usrC
   }else {
     console.log("Login fail");
+    return null
   }
 }
 
@@ -71,6 +94,7 @@ const uploadImage = async (imageUri:String)=> {
       return res.data.url
   }else{
       console.log("save failed " + res.problem)
+      return null
   }
 }
 export default {
