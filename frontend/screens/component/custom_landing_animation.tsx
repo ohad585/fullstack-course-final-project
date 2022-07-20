@@ -13,7 +13,12 @@ const LandingAnimation: FC<{visible: boolean}>=({visible}) =>{
             loop
             source={require("../../animations/smiley-face.json")}
             ref={animation}
-            style={{width:300,height:300,flex:1}}
+            style={{
+                width:300,
+                height:300,
+                //flex:1
+                alignSelf:"center"
+            }}
             
             ></LottieView>
         )

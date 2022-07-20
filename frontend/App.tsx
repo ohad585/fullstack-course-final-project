@@ -35,14 +35,15 @@ const HomeStackScreen: FC<{ navigation: any; route: any }> = ({ navigation, rout
     }
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Landing" component={LandingScreen}/>
+      <HomeStack.Screen name="Landing" component={LandingScreen} options={{
+        headerShown:false
+      }}/>
       <HomeStack.Screen name="Home" component={HomeScreen} options={{
           headerRight: ()=>{return (<TopBarAddButton onClick={openAddPost}></TopBarAddButton>)}
           }} />
       <HomeStack.Screen name="Login" component={LoginScreen} />
       <HomeStack.Screen name="Register" component={RegistrationScreen} />
       <HomeStack.Screen name="Add Post" component={AddPostScreen} />
-
     </HomeStack.Navigator>
   );
 };
@@ -70,7 +71,7 @@ const App: FC = () => {
           tabBarInactiveTintColor: "gray",
         })}
       >
-        <Tab.Screen name="Home" component={HomeStackScreen} options={{headerShown :false}}></Tab.Screen>
+        <Tab.Screen name="HomeStack" component={HomeStackScreen} options={{headerShown :false,title:"Home"}}></Tab.Screen>
         <Tab.Screen name="About" component={AboutScreen}></Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>
