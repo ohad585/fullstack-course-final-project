@@ -17,6 +17,9 @@ const addUser = async (user: User) => {
   
   await UserApi.addUser(user)
 };
+const addGoogleUser =async (usr:User) => {
+  await UserApi.addGoogleUser(usr)
+}
 const loginUser =async (user:User) => {
   console.log("user_model loginUser "+user.email + " "+ user.password);
   
@@ -32,4 +35,5 @@ export default {
   addUser,
   loginUser,
   uploadImage,
+  addGoogleUser,
 };

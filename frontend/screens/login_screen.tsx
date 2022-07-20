@@ -27,19 +27,31 @@ const Login: FC<{ navigation: any; route: any }> = ({
         imageUri:""
       } 
       UserModle.loginUser(user)
+    }
+
+    const googleLogin =async (accessToken:String)=>{
+      const userInfo = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+      headers: { Authorization: `Bearer ${accessToken}`}
+    })
+      const data = await userInfo.json()
+      console.log(data);
+      const usr:User={
+        email:data.email,
+        password : "google",
+        imageUri:data.picture
+      }
+      UserModle.addGoogleUser(usr)
+    }
+
+    const facebookLogin =async (accessToken:String) => {
       
     }
-    // const facebookLogin = (response:ReactFacebookLoginInfo)=>{
-    //   console.log(response)
-    // }
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>Login Page</Text>
         <TextInput style={styles.textInput} onChangeText={setUserName} placeholder="UserName" keyboardType="default"></TextInput>
         <TextInput style={styles.textInput} onChangeText={setPassword} placeholder="Password" keyboardType="default"></TextInput>
-        {/* //log in with facebook */}
-        {/* <FacebookLogin></FacebookLogin> */}
-        {/* //log in with google */}
+      
         <TouchableHighlight
         underlayColor={COLORS.clickBackground} 
         onPress={()=>{ 
@@ -48,7 +60,10 @@ const Login: FC<{ navigation: any; route: any }> = ({
         style={styles.button}>
          <Text style={styles.buttonText}>Login</Text>
        </TouchableHighlight>
-       <GoogleLoginBtn></GoogleLoginBtn>
+       <Text style={{textDecorationLine:'underline'}}>Sign in with:</Text>
+       <View style={styles.carriers_container}>
+        <GoogleLoginBtn successHandler={googleLogin}></GoogleLoginBtn>
+       </View>
       </View>
     );
   };
@@ -72,6 +87,9 @@ const Login: FC<{ navigation: any; route: any }> = ({
     },
     buttonText:{
 
+    },
+    carriers_container:{
+      flexDirection:"row"
     }
 })
 

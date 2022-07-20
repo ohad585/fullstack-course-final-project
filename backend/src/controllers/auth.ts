@@ -3,8 +3,10 @@ import { Request,Response } from 'express'
 import { StatusCodes } from "http-status-codes";
 import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken";
+import { RequestInfo, RequestInit } from 'node-fetch';
 
-
+// const fetch = (url: RequestInfo, init?: RequestInit) =>
+//   import('node-fetch').then(({ default: fetch }) => fetch(url, init));
 /**
  * register
  * @param {http req} req
@@ -66,6 +68,7 @@ import jwt from "jsonwebtoken";
     }
   };
   
+
 /**
  * login
  * @param {http request} req 
@@ -197,15 +200,22 @@ import jwt from "jsonwebtoken";
    * @param res html response
    * @returns id,access_token,refresh_token
    */
-  const facebookLogin =async (req: Request, res: Response) => {
-    const email = req.body.email;
+  const googleLogin =async (req: Request, res: Response) => {
+    console.log("Google login attempt");
+    
+    
+    var email = req.body.email
+    var picture = req.body.imageUri
+    console.log("Google login attempt "+email);
+    
+    
     try{
       var user = await User.findOne({ email: email });
       if (user == null) {
         //save user to db
         user = new User({
             email:email,
-            password:"FaceBook"
+            password:"google",
         })
         user = await user.save();  
       }
@@ -238,7 +248,7 @@ import jwt from "jsonwebtoken";
     login,
     renewToken,
     test,
-    facebookLogin
+    googleLogin
   };
   
 

@@ -32,6 +32,21 @@ const addUser = async (user: User) => {
     console.log("addUser fail");
   }};
 
+  const addGoogleUser = async (usr: User) => {
+    console.log("Add google user attempt "+ usr.email);
+    
+    const res = await apiClient.post("/auth/register/google",{
+      email:usr.email,
+      password:usr.password,
+      imageUri:usr.imageUri
+    });
+    if(res.ok){
+      console.log("addGoogleUser success");
+      
+    }else {
+      console.log("addGoogleUser fail");
+    }};
+
 const loginUser =async (user:User) => {
   const res = await apiClient.post("/auth/login",{
     email:user.email,
@@ -63,5 +78,6 @@ export default {
   addUser,
   loginUser,
   uploadImage,
+  addGoogleUser,
 };
 
