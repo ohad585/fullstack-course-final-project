@@ -14,9 +14,14 @@ const getAllUsers = async () => {
   return users
 };
 const addUser = async (user: User) => {
-  
   await UserApi.addUser(user)
 };
+
+const updateUser = async (user: User) => {
+  await UserApi.updateUser(user)
+};
+
+
 const loginUser =async (user:User) => {
   console.log("user_model loginUser "+user.email + " "+ user.password);
   
@@ -32,4 +37,5 @@ export default {
   addUser,
   loginUser,
   uploadImage,
+  updateUser
 };

@@ -8,6 +8,10 @@ export type Post = {
   imageUrl: String;
 };
 
+const getUserPosts=async(UserID:String)=>{
+  const posts= await PostApi.getUserPosts(UserID)
+  return posts
+};
 
 
 const getAllPosts = async () => {
@@ -27,5 +31,6 @@ const uploadImage = async (imageUri:String)=> {
 export default {
   getAllPosts,
   addPost,
-  uploadImage
+  uploadImage,
+  getUserPosts
 };

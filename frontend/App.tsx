@@ -5,7 +5,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
-
 import HomeScreen from "./screens/home_screen"
 import AboutScreen from "./screens/about_screen"
 //import DetailsScreen from "./screens/details_screen"
@@ -15,6 +14,7 @@ import RegistrationScreen from "./screens/registration_screen"
 import COLORS from "./constants/colors";
 import AddPostScreen from "./screens/add_post_screen"
 import UserDetailsScreen from "./screens/user_details_screen"
+import UserPostsScreen from "./screens/user_posts_screen"
 
 
 
@@ -43,6 +43,8 @@ const HomeStackScreen: FC<{ navigation: any; route: any }> = ({ navigation, rout
       <HomeStack.Screen name="Register" component={RegistrationScreen} />
       <HomeStack.Screen name="Add Post" component={AddPostScreen} />
       <HomeStack.Screen name="User Details" component={UserDetailsScreen} />
+      <HomeStack.Screen name="User Posts" component={UserPostsScreen} />
+
 
 
     </HomeStack.Navigator>
@@ -77,6 +79,8 @@ const App: FC = () => {
         <Tab.Screen name="Login" component={LoginScreen}></Tab.Screen>
         <Tab.Screen name="Register" component={RegistrationScreen}></Tab.Screen>
         <Tab.Screen name="UserDetails" component={UserDetailsScreen}></Tab.Screen>
+        <Tab.Screen name="UserPosts" component={UserPostsScreen}></Tab.Screen>
+
 
 
       </Tab.Navigator>

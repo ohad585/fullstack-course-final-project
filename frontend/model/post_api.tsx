@@ -1,5 +1,30 @@
 import apiClient from "./ApiClient";
 import { Post } from "./post_model";
+import { User } from "./user_model";
+
+
+
+const getUserPosts=async(userID: String)=>{
+  const res = await apiClient.get("/post/");
+  let posts = Array<Post>()
+
+  if(res.data.id===userID){
+    res.data.forEach((element) => {
+      const p:Post ={
+        id: element.sender,
+        name: element.message,
+        text: element.text,
+        imageUrl: element.imageUri
+      }
+      posts.push(p)
+    });
+  }else {
+    console.log("getUserPosts fail");
+    
+  }
+  return posts
+};
+
 
 const getAllPosts = async () => {
   const res = await apiClient.get("/post/");
@@ -21,6 +46,7 @@ const getAllPosts = async () => {
   }
   return posts
 };
+
 const addPost = async (p: Post) => {
   const res = await apiClient.post("/post",{
     sender: p.id,
@@ -53,5 +79,6 @@ export default {
   getAllPosts,
   addPost,
   uploadImage,
+  getUserPosts
 };
 

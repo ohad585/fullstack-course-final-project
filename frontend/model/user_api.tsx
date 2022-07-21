@@ -19,6 +19,8 @@ const getAllUsers = async () => {
   }
   return users
 };
+
+
 const addUser = async (user: User) => {
   const res = await apiClient.post("/auth/register",{
     email:user.email,
@@ -30,6 +32,22 @@ const addUser = async (user: User) => {
     
   }else {
     console.log("addUser fail");
+  }};
+
+
+const updateUser = async (user: User) => {
+  const email=//get specific mail
+  if(user.email==email)
+    const res = await apiClient.post("",{
+      email:user.email,
+      password:user.password,
+      imageUri:user.imageUri
+    });
+    if(res.ok){
+      console.log("updateUser success");
+      
+    }else {
+      console.log("updateUser fail");
   }};
 
 const loginUser =async (user:User) => {
@@ -58,10 +76,13 @@ const uploadImage = async (imageUri:String)=> {
       console.log("save failed " + res.problem)
   }
 }
+
+
 export default {
   getAllUsers,
   addUser,
   loginUser,
   uploadImage,
+  updateUser
 };
 
