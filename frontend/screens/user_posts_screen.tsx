@@ -1,9 +1,18 @@
 import React, { FC, useEffect, useState } from "react"
-import { View, Text, Image, StyleSheet, FlatList, TouchableHighlight } from "react-native"
+import { View, Text, Image, StyleSheet, FlatList, TouchableHighlight ,Button} from "react-native"
 
 import COLORS from "../constants/colors"
 import postModel,{Post} from "../model/post_model"
 import ActivityIndicator from "./component/custom_activity_indicator"
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import EditPostScreen from "../screens/edit_post_screen"
+
+const UserPostsStack = createNativeStackNavigator();
+const removePost =  (postID:String) =>{
+    //to do: function in post model
+
+}
 
 const UserPostListRow: FC<{ post: Post, onItemClick: (id:String)=>void }> = ({ post, onItemClick }) => {
     return (
@@ -14,8 +23,11 @@ const UserPostListRow: FC<{ post: Post, onItemClick: (id:String)=>void }> = ({ p
                 { post.imageUrl != "" &&  <Image source={{uri: post.imageUrl.toString()}} style={styles.list_row_image}></Image>}
                 { post.imageUrl == "" &&  <Image source={require("../assets/avatar.jpeg")} style={styles.list_row_image}></Image>}
                 <View style={styles.list_row_text_container}>
-                    <Text style={styles.list_row_name}>{post.name}</Text>
                     <Text style={styles.list_row_id}>{post.id}</Text>
+                    <Text style={styles.list_row_name}>{post.text}</Text>
+                    <TouchableHighlight onPress={()=>navigation.navigate("Edit Post Screen")}>Edit Post</TouchableHighlight>
+                    <TouchableHighlight onPress={removePost(post.id)}>Remove Post</TouchableHighlight>
+
                 </View>
             </View>
         </TouchableHighlight>
@@ -34,20 +46,27 @@ const UserPosts: FC<{ navigation: any, route: any }> = ({ navigation, route }) =
 
     useEffect(()=>{
         navigation.addListener('focus',()=>{
-            reloadData()
+            //found how is login
+            var userID="123"
+            reloadData(userID)
         })
     },[navigation])
 
-    const reloadData = async ()=>{
+    const reloadData = async (userID:String)=>{
         setIsLoading(true)
-        var userID="123" //change to real user ID
         const postData = await postModel.getUserPosts(userID)
         setData(postData)
         setIsLoading(false)
     }
 
     return (
+        
         <View style={styles.home_container}>
+            <NavigationContainer>
+            <UserPostsStack.Navigator screenOptions={{ title: 'Apply to all' }}>
+            <UserPostsStack.Screen name="Edit Post Screen" component={EditPostScreen} />
+            </UserPostsStack.Navigator>
+            </NavigationContainer>
             <FlatList
                 data={data}
                 keyExtractor={item => item.id.toString()}

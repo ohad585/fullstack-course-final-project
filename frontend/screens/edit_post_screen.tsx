@@ -1,35 +1,35 @@
 import React, { FC, useState } from "react";
 import { View, Text ,StyleSheet ,Image, TextInput, TouchableHighlight, ScrollView} from "react-native";
-import UserModel,{User} from "../model/user_model"
+import PostModel,{Post} from "../model/post_model"
 import COLORS from "../constants/colors";
 import ActivityIndicator from "./component/custom_activity_indicator";
 import CustomImagePicker from "./component/custom_image_picker";
 
-const Edit_User: FC<{ navigation: any; route: any }> = ({
+const Edit_Post: FC<{ navigation: any; route: any }> = ({
     navigation,
     route,
   }) => {
     const [isLoading,setIsLoading] =useState<boolean>(false)
-    const [UserName,setUserName] = useState<String>("")
-    const [Password,setPassword] = useState<String>("")
-    const [imageUri,setImageUri] = useState<String>("")
+    const [ID,setID] = useState<String>("")
+    const [text,setText] = useState<String>("")
+    const [imageUrl,setImageUrl] = useState<String>("")
 
 
     const onSave = async ()=>{
       setIsLoading(true)
-      if(UserName!="" && Password !="" ){
-        const user:User = {
-          email:UserName,
-          password:Password,
-          imageUri: ''
+      if(text!="" && imageUrl !="" ){
+        const post:Post = {
+          id:ID,
+          text:text,
+          imageUrl: ''
         }
-        if(imageUri != ""){
+        if(imageUrl != ""){
           console.log("saving image")
-          const url = await UserModel.uploadImage(imageUri)
-          user.imageUri = url
+          const url = await PostModel.uploadImage(imageUrl)
+          post.imageUrl = url
           console.log("saving image : " + url) 
       }
-        await UserModel.updateUser(user)
+        await PostModel.updatePost(post)
         setIsLoading(false)
         navigation.goBack()
       }
@@ -37,16 +37,17 @@ const Edit_User: FC<{ navigation: any; route: any }> = ({
 
     const onImageSelected = (uri:String)=>{
       console.log("onImageSelected " + uri)
-      setImageUri(uri)
+      setImageUrl(uri)
   }
+
+
     return (
       <ScrollView>
       <View style={styles.container}>
       <View style={styles.image} >
          <CustomImagePicker onImageSelected={onImageSelected}></CustomImagePicker>
       </View>
-      <TextInput style={styles.textInput} onChangeText={setUserName} placeholder="UserName" keyboardType="default"></TextInput>
-      <TextInput style={styles.textInput} onChangeText={setPassword} placeholder="Password" keyboardType="default"></TextInput>
+      <TextInput style={styles.textInput} onChangeText={setText} placeholder="postName" keyboardType="default"></TextInput>
 
       <TouchableHighlight
         underlayColor={COLORS.clickBackground} 
@@ -101,4 +102,4 @@ const Edit_User: FC<{ navigation: any; route: any }> = ({
       }
   })
 
-  export default Edit_User
+  export default Edit_Post

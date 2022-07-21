@@ -36,19 +36,23 @@ const addUser = async (user: User) => {
 
 
 const updateUser = async (user: User) => {
-  const email=//get specific mail
-  if(user.email==email)
-    const res = await apiClient.post("",{
+  //know user
+  const res = await apiClient.get("/user/:email",{});
+  //edit user
+  if(user.email===res.data.email){
+    const res = await apiClient.post("/user/edit",{
       email:user.email,
       password:user.password,
       imageUri:user.imageUri
-    });
+    });   
     if(res.ok){
       console.log("updateUser success");
       
     }else {
       console.log("updateUser fail");
   }};
+}
+
 
 const loginUser =async (user:User) => {
   const res = await apiClient.post("/auth/login",{

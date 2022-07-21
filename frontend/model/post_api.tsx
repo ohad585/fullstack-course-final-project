@@ -7,12 +7,10 @@ import { User } from "./user_model";
 const getUserPosts=async(userID: String)=>{
   const res = await apiClient.get("/post/");
   let posts = Array<Post>()
-
   if(res.data.id===userID){
     res.data.forEach((element) => {
       const p:Post ={
         id: element.sender,
-        name: element.message,
         text: element.text,
         imageUrl: element.imageUri
       }
@@ -34,7 +32,6 @@ const getAllPosts = async () => {
     res.data.forEach((element) => {
       const p:Post ={
         id: element.sender,
-        name: element.message,
         text: element.text,
         imageUrl: element.imageUri
       }
@@ -50,8 +47,9 @@ const getAllPosts = async () => {
 const addPost = async (p: Post) => {
   const res = await apiClient.post("/post",{
     sender: p.id,
-    message: p.name,
-    text: p.text
+    text: p.text,
+   imageUrl: p.imageUrl
+
   });
   if(res.ok){
     console.log("addPost success");
@@ -74,11 +72,29 @@ const addPost = async (p: Post) => {
         console.log("save failed " + res.problem)
     }
 }
+const updatePost = async (postID: String) => {
+  //know Post
+  const post = await apiClient.get("/post/:id",{}); 
+  //edit Post
+  if(postID===post.data.id){
+    const res = await apiClient.post("/post/edit",{
+      id:post.data.id,
+      text:post.data.text,
+      imageUri:post.data.imageUri
+    });   
+    if(res.ok){
+      console.log("updatePost success");
+      
+    }else {
+      console.log("updatePost fail");
+  }};
+}
 
 export default {
   getAllPosts,
   addPost,
   uploadImage,
-  getUserPosts
+  getUserPosts,
+  updatePost
 };
 
