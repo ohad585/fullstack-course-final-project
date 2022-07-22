@@ -11,14 +11,11 @@ import EditPostScreen from "../screens/edit_post_screen"
 const UserPostsStack = createNativeStackNavigator();
 const removePost =  (postID:String) =>{
     //to do: function in post model
-
 }
 
-const UserPostListRow: FC<{ post: Post, onItemClick: (id:String)=>void }> = ({ post, onItemClick }) => {
+const UserPostListRow: FC<{ post: Post, navigation: any}> = ({ post  ,navigation}) => {
     return (
-        <TouchableHighlight
-            onPress={()=>{onItemClick(post.id)}}
-            underlayColor={COLORS.clickBackground}>
+        <TouchableHighlight>
             <View style={styles.list_row_container}>
                 { post.imageUrl != "" &&  <Image source={{uri: post.imageUrl.toString()}} style={styles.list_row_image}></Image>}
                 { post.imageUrl == "" &&  <Image source={require("../assets/avatar.jpeg")} style={styles.list_row_image}></Image>}
@@ -26,7 +23,7 @@ const UserPostListRow: FC<{ post: Post, onItemClick: (id:String)=>void }> = ({ p
                     <Text style={styles.list_row_id}>{post.id}</Text>
                     <Text style={styles.list_row_name}>{post.text}</Text>
                     <TouchableHighlight onPress={()=>navigation.navigate("Edit Post Screen")}>Edit Post</TouchableHighlight>
-                    <TouchableHighlight onPress={removePost(post.id)}>Remove Post</TouchableHighlight>
+                    <TouchableHighlight onPress={()=>removePost(post.id)}>Remove Post</TouchableHighlight>
 
                 </View>
             </View>
@@ -39,10 +36,6 @@ const UserPosts: FC<{ navigation: any, route: any }> = ({ navigation, route }) =
     const [data, setData] = useState<Array<Post>>()
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    const openDetails = (id:String)=>{
-        console.log("on press " + id)
-        navigation.navigate('Details', {id: id})
-    }
 
     useEffect(()=>{
         navigation.addListener('focus',()=>{
@@ -70,9 +63,7 @@ const UserPosts: FC<{ navigation: any, route: any }> = ({ navigation, route }) =
             <FlatList
                 data={data}
                 keyExtractor={item => item.id.toString()}
-                renderItem={({ item }) => 
-                (<UserPostListRow post={item} 
-                            onItemClick={openDetails} />)}
+                renderItem={({ item }) => (<UserPostListRow post={item} navigation={navigation} />)}
             ></FlatList>
             <View style={styles.activity_indicator}>
                 <ActivityIndicator visible={isLoading}></ActivityIndicator>

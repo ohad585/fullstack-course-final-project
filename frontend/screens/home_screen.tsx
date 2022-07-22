@@ -5,17 +5,19 @@ import COLORS from "../constants/colors"
 import postModel,{Post} from "../model/post_model"
 import ActivityIndicator from "./component/custom_activity_indicator"
 
-const PostListRow: FC<{ post: Post, onItemClick: (id:String)=>void }> = ({ post, onItemClick }) => {
+const PostListRow: FC<{ post: Post, onItemClick: (post:Post)=>void }> = ({ post, onItemClick }) => {
     return (
         <TouchableHighlight
-            onPress={()=>{onItemClick(post.id)}}
+            onPress={()=>{onItemClick(post)}}
             underlayColor={COLORS.clickBackground}>
             <View style={styles.list_row_container}>
                 { post.imageUrl != "" &&  <Image source={{uri: post.imageUrl.toString()}} style={styles.list_row_image}></Image>}
                 { post.imageUrl == "" &&  <Image source={require("../assets/avatar.jpeg")} style={styles.list_row_image}></Image>}
                 <View style={styles.list_row_text_container}>
-                    <Text style={styles.list_row_name}>{post.name}</Text>
                     <Text style={styles.list_row_id}>{post.id}</Text>
+                    <Text style={styles.list_row_name}>{post.text}</Text>
+
+
                 </View>
             </View>
         </TouchableHighlight>
@@ -27,9 +29,11 @@ const Home: FC<{ navigation: any, route: any }> = ({ navigation, route }) => {
     const [data, setData] = useState<Array<Post>>()
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    const openDetails = (id:String)=>{
-        console.log("on press " + id)
-        navigation.navigate('Details', {id: id})
+
+    //void callback function
+    const openDetails = (post:Post)=>{
+        console.log("on press " + post.id)
+        navigation.navigate('Post Details', {post: post})
     }
 
     useEffect(()=>{
@@ -50,9 +54,7 @@ const Home: FC<{ navigation: any, route: any }> = ({ navigation, route }) => {
             <FlatList
                 data={data}
                 keyExtractor={item => item.id.toString()}
-                renderItem={({ item }) => 
-                (<PostListRow post={item} 
-                            onItemClick={openDetails} />)}
+                renderItem={({ item }) => (<PostListRow post={item} onItemClick={openDetails} />)}
             ></FlatList>
             <View style={styles.activity_indicator}>
                 <ActivityIndicator visible={isLoading}></ActivityIndicator>

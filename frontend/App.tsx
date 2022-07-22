@@ -3,18 +3,16 @@ import { View, Text, StyleSheet, Button ,Image, TouchableHighlight} from "react-
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
 import Ionicons from "@expo/vector-icons/Ionicons";
+import COLORS from "./constants/colors";
+
 import HomeScreen from "./screens/home_screen"
-import AboutScreen from "./screens/about_screen"
-//import DetailsScreen from "./screens/details_screen"
-//import AddStudentScreen from "./screens/add_student_screen";
 import LoginScreen from "./screens/login_screen"
 import RegistrationScreen from "./screens/registration_screen"
-import COLORS from "./constants/colors";
 import AddPostScreen from "./screens/add_post_screen"
 import UserDetailsScreen from "./screens/user_details_screen"
 import UserPostsScreen from "./screens/user_posts_screen"
+import PostDetailsScreen from "./screens/post_screen"
 
 
 
@@ -22,6 +20,8 @@ const Tab = createBottomTabNavigator();
 
 const HomeStack = createNativeStackNavigator();
 
+
+//component of add post btn
 const TopBarAddButton: FC<{onClick:()=>void}> = ({onClick})=>{
     return(
         <TouchableHighlight onPress={()=>{onClick()}} underlayColor ={COLORS.clickBackground}>
@@ -36,16 +36,14 @@ const HomeStackScreen: FC<{ navigation: any; route: any }> = ({ navigation, rout
     }
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Home" component={HomeScreen} options={{
-          headerRight: ()=>{return (<TopBarAddButton onClick={openAddPost}></TopBarAddButton>)}
-          }} />
+      <HomeStack.Screen name="Home" component={HomeScreen} 
+      options={{headerRight: ()=>{return (<TopBarAddButton onClick={openAddPost}></TopBarAddButton>)}}} />
       <HomeStack.Screen name="Login" component={LoginScreen} />
       <HomeStack.Screen name="Register" component={RegistrationScreen} />
       <HomeStack.Screen name="Add Post" component={AddPostScreen} />
       <HomeStack.Screen name="User Details" component={UserDetailsScreen} />
       <HomeStack.Screen name="User Posts" component={UserPostsScreen} />
-
-
+      <HomeStack.Screen name="Post Details" component={PostDetailsScreen} />
 
     </HomeStack.Navigator>
   );
@@ -75,7 +73,6 @@ const App: FC = () => {
         })}
       >
         <Tab.Screen name="HomeStack" component={HomeStackScreen} options={{headerShown :false}}></Tab.Screen>
-        <Tab.Screen name="About" component={AboutScreen}></Tab.Screen>
         <Tab.Screen name="Login" component={LoginScreen}></Tab.Screen>
         <Tab.Screen name="Register" component={RegistrationScreen}></Tab.Screen>
         <Tab.Screen name="UserDetails" component={UserDetailsScreen}></Tab.Screen>
