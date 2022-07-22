@@ -17,8 +17,8 @@ const addUser = async (user: User) => {
   await UserApi.addUser(user)
 };
 
-const updateUser = async (user: User) => {
-  await UserApi.updateUser(user)
+const updateUser = async (user: User, oldEmail:String) => {
+  await UserApi.updateUser(user,oldEmail)
 };
 
 

@@ -14,6 +14,7 @@ import UserDetailsScreen from "./screens/user_details_screen"
 import UserPostsScreen from "./screens/user_posts_screen"
 import PostDetailsScreen from "./screens/post_screen"
 import EditUserDetailsScreen from "./screens/edit_user_details"
+import EditPostScreen from "./screens/edit_post_screen"
 
 
 
@@ -47,6 +48,7 @@ const HomeStackScreen: FC<{ navigation: any; route: any }> = ({ navigation, rout
       <HomeStack.Screen name="User Posts" component={UserPostsScreen} />
       <HomeStack.Screen name="Post Details" component={PostDetailsScreen} />
       <HomeStack.Screen name="Edit User Details" component={EditUserDetailsScreen} />
+      <HomeStack.Screen name="Edit Post Screen" component={EditPostScreen} />
 
       
 

@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import EditUserDetailsScreen from "../screens/edit_user_details"
 import {User} from "../model/user_model"
 
-const UserDetailsStack = createNativeStackNavigator();
+//const UserDetailsStack = createNativeStackNavigator();
 
 
 const UserDetails: FC<{ navigation: any; route: any ,user:User}> = ({
@@ -13,7 +13,6 @@ const UserDetails: FC<{ navigation: any; route: any ,user:User}> = ({
     route,
     user
   }) => {
-    const [userID ,setUserID] = useState<String>("")
     const [userMail ,setUserMail] = useState<String>("")
     const [userPassword ,setUserPassword] = useState<String>("")
     const [userImgUri ,setUserImgUri] = useState<String>("")
@@ -30,15 +29,15 @@ const UserDetails: FC<{ navigation: any; route: any ,user:User}> = ({
 
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <NavigationContainer>
+       {/*  <NavigationContainer>
             <UserDetailsStack.Navigator screenOptions={{ title: 'Apply to all' }}>
             <UserDetailsStack.Screen name="Edit User Screen" component={EditUserDetailsScreen} />
             </UserDetailsStack.Navigator>
-            </NavigationContainer>
+            </NavigationContainer> */}
         <Text>user mail: {userMail}</Text>
         <Text>user Password: {userPassword}</Text>
         <Text>user Img: {userImgUri}</Text>
-        <TouchableHighlight onPress={()=>navigation.navigate("Edit User Details"),{user:user}}>edit</TouchableHighlight>
+        <TouchableHighlight onPress={()=>navigation.navigate("Edit User Details",{user:user})}>edit</TouchableHighlight>
 
 
       </View>

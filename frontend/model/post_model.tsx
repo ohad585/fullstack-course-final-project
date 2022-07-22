@@ -18,7 +18,6 @@ const getAllPosts = async () => {
   return posts
 };
 const addPost = async (p: Post) => {
-  
   await PostApi.addPost(p)
 };
 
@@ -27,14 +26,18 @@ const uploadImage = async (imageUri:String)=> {
   return url
 }
 const updatePost = async (post: Post) => {
-  await PostApi.updatePost(post)
+  await PostApi.updatePost(post.id)
 };
 
+const removePost = async (postID: String) => {
+  await PostApi.removePost(postID)
+};
 
 export default {
   getAllPosts,
   addPost,
   uploadImage,
   getUserPosts,
-  updatePost
+  updatePost,
+  removePost
 };

@@ -10,6 +10,7 @@ const getAllUsers = async () => {
       const user:User ={
         email: element.userName,
         password: element.password,
+        imageUri:element.imgUri
       }
       users.push(user)
     });
@@ -35,21 +36,19 @@ const addUser = async (user: User) => {
   }};
 
 
-const updateUser = async (user: User) => {
-  //know user
-  const res = await apiClient.get("/user/:email",{});
-  //edit user
+const updateUser = async (user: User,oldEmail:String) => {
   if(user.email===res.data.email){
     const res = await apiClient.post("/user/edit",{
-      email:user.email,
+      oldEmail:oldEmail,
+      newEmail:user.email,
       password:user.password,
       imageUri:user.imageUri
     });   
     if(res.ok){
-      console.log("updateUser success");
+      console.log("update User success");
       
     }else {
-      console.log("updateUser fail");
+      console.log("update User fail");
   }};
 }
 

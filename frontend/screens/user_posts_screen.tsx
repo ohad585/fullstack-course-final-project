@@ -2,20 +2,21 @@ import React, { FC, useEffect, useState } from "react"
 import { View, Text, Image, StyleSheet, FlatList, TouchableHighlight ,Button} from "react-native"
 
 import COLORS from "../constants/colors"
-import postModel,{Post} from "../model/post_model"
+import PostModel,{Post} from "../model/post_model"
+import UserModel from "../model/user_model"
+
 import ActivityIndicator from "./component/custom_activity_indicator"
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import EditPostScreen from "../screens/edit_post_screen"
 
-const UserPostsStack = createNativeStackNavigator();
-const removePost =  (postID:String) =>{
-    //to do: function in post model
+//const UserPostsStack = createNativeStackNavigator();
+const removePost = async (postID:String) =>{
+   await postModel.removePost(postID);
 }
 
 const UserPostListRow: FC<{ post: Post, navigation: any}> = ({ post  ,navigation}) => {
     return (
-        <TouchableHighlight>
             <View style={styles.list_row_container}>
                 { post.imageUrl != "" &&  <Image source={{uri: post.imageUrl.toString()}} style={styles.list_row_image}></Image>}
                 { post.imageUrl == "" &&  <Image source={require("../assets/avatar.jpeg")} style={styles.list_row_image}></Image>}
@@ -27,7 +28,6 @@ const UserPostListRow: FC<{ post: Post, navigation: any}> = ({ post  ,navigation
 
                 </View>
             </View>
-        </TouchableHighlight>
     )
 }
 
@@ -39,15 +39,14 @@ const UserPosts: FC<{ navigation: any, route: any }> = ({ navigation, route }) =
 
     useEffect(()=>{
         navigation.addListener('focus',()=>{
-            //found how is login
-            var userID="123"
+            var userID="213"
             reloadData(userID)
         })
     },[navigation])
 
     const reloadData = async (userID:String)=>{
         setIsLoading(true)
-        const postData = await postModel.getUserPosts(userID)
+        const postData = await PostModel.getUserPosts(userID)
         setData(postData)
         setIsLoading(false)
     }
@@ -55,11 +54,11 @@ const UserPosts: FC<{ navigation: any, route: any }> = ({ navigation, route }) =
     return (
         
         <View style={styles.home_container}>
-            <NavigationContainer>
+          {/*   <NavigationContainer>
             <UserPostsStack.Navigator screenOptions={{ title: 'Apply to all' }}>
             <UserPostsStack.Screen name="Edit Post Screen" component={EditPostScreen} />
             </UserPostsStack.Navigator>
-            </NavigationContainer>
+            </NavigationContainer> */}
             <FlatList
                 data={data}
                 keyExtractor={item => item.id.toString()}

@@ -5,13 +5,21 @@ import COLORS from "../constants/colors";
 import ActivityIndicator from "./component/custom_activity_indicator";
 import CustomImagePicker from "./component/custom_image_picker";
 
-const Edit_User: FC<{ navigation: any; user:User }> = ({navigation,user}) => {
+const Edit_User: FC<{ navigation: any; route:any }> = ({navigation, route}) => {
     const [isLoading,setIsLoading] =useState<boolean>(false)
     const [UserName,setUserName] = useState<String>("")
+    const [UserNameOld,setUserNameOld] = useState<String>("")
     const [Password,setPassword] = useState<String>("")
     const [imageUri,setImageUri] = useState<String>("")
 
-
+    React.useEffect(()=>{
+      if(route.params?.user){
+        setUserName(route.params.user.email)
+        setUserNameOld(route.params.user.email)
+        setPassword(route.params.user.password)
+        setImageUri(route.params.user.imageUrl)
+      }
+})
     const onSave = async ()=>{
       setIsLoading(true)
       if(UserName!="" && Password !="" ){
@@ -27,7 +35,7 @@ const Edit_User: FC<{ navigation: any; user:User }> = ({navigation,user}) => {
           console.log("saving image : " + url) 
       }
       
-        await UserModel.updateUser(user)
+        await UserModel.updateUser(user,UserNameOld)
         setIsLoading(false)
         navigation.goBack()
       }
@@ -46,8 +54,8 @@ const Edit_User: FC<{ navigation: any; user:User }> = ({navigation,user}) => {
       <View style={styles.image} >
         <CustomImagePicker onImageSelected={onImageSelected}></CustomImagePicker>
       </View>
-      <TextInput style={styles.textInput} onChangeText={setUserName} placeholder={user.email.toString()} keyboardType="default"></TextInput>
-      <TextInput style={styles.textInput} onChangeText={setPassword} placeholder={user.password.toString()} keyboardType="default"></TextInput>
+      <TextInput style={styles.textInput} onChangeText={setUserName} placeholder={UserName.toString()} keyboardType="default"></TextInput>
+      <TextInput style={styles.textInput} onChangeText={setPassword} placeholder={Password.toString()} keyboardType="default"></TextInput>
 
       <TouchableHighlight
         underlayColor={COLORS.clickBackground} 

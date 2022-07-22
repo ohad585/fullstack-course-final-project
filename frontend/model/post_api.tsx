@@ -73,28 +73,38 @@ const addPost = async (p: Post) => {
     }
 }
 const updatePost = async (postID: String) => {
-  //know Post
-  const post = await apiClient.get("/post/:id",{}); 
-  //edit Post
-  if(postID===post.data.id){
-    const res = await apiClient.post("/post/edit",{
+  const post = await apiClient.get("/post/:"+postID,{}); 
+  const res = await apiClient.post("/post/edit",{
       id:post.data.id,
       text:post.data.text,
       imageUri:post.data.imageUri
     });   
     if(res.ok){
-      console.log("updatePost success");
+      console.log("update Post success");
       
     }else {
-      console.log("updatePost fail");
+      console.log("update Post fail");
   }};
-}
+
+
+const removePost=async (postID: String) =>{
+  const res = await apiClient.delete("/post/:"+postID,{});   
+  if(res.ok){
+    console.log("remove Post success");
+    
+  }else {
+    console.log("remove Post fail");
+}};
+
+
+
 
 export default {
   getAllPosts,
   addPost,
   uploadImage,
   getUserPosts,
-  updatePost
+  updatePost,
+  removePost
 };
 
