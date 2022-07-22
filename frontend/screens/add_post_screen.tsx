@@ -21,7 +21,6 @@ const Add_Post: FC<{ navigation: any; route: any }> = ({
       if(id!="" && name !=""){
         const p:Post = {
           id:id,
-          name:name,
           text:text,
           imageUrl:'',
         }

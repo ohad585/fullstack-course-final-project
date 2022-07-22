@@ -18,13 +18,13 @@ const getAllUsers = async () => {
 };
 const addUser = async (user: User) => {
   return await UserApi.addUser(user);
-};
+}; 
 const addGoogleUser = async (usr: User) => {
   return await UserApi.addGoogleUser(usr);
 };
+
 const loginUser = async (user: User) => {
   console.log("user_model loginUser " + user.email + " " + user.password);
-
   return await UserApi.loginUser(user);
 };
 const uploadImage = async (imageUri: String) => {
@@ -32,10 +32,19 @@ const uploadImage = async (imageUri: String) => {
   return await UserApi.uploadImage(imageUri);
 };
 
+
+const updateUser = async (user: User, oldEmail:String) => {
+  await UserApi.updateUser(user,oldEmail)
+};
+
+
+
+
 export default {
   getAllUsers,
   addUser,
   loginUser,
   uploadImage,
   addGoogleUser,
+  updateUser
 };

@@ -1,60 +1,68 @@
 import React, { FC, useEffect, useState } from "react"
-import { View, Text, Image, StyleSheet, FlatList, TouchableHighlight } from "react-native"
+import { View, Text, Image, StyleSheet, FlatList, TouchableHighlight ,Button} from "react-native"
 
 import COLORS from "../constants/colors"
 import PostModel,{Post} from "../model/post_model"
-import ActivityIndicator from "./component/custom_activity_indicator"
+import UserModel from "../model/user_model"
 
-const PostListRow: FC<{ post: Post, onItemClick: (post:Post)=>void }> = ({ post, onItemClick }) => {
+import ActivityIndicator from "./component/custom_activity_indicator"
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import EditPostScreen from "../screens/edit_post_screen"
+
+//const UserPostsStack = createNativeStackNavigator();
+const removePost = async (postID:String) =>{
+   await postModel.removePost(postID);
+}
+
+const UserPostListRow: FC<{ post: Post, navigation: any}> = ({ post  ,navigation}) => {
     return (
-        <TouchableHighlight
-            onPress={()=>{onItemClick(post)}}
-            underlayColor={COLORS.clickBackground}>
             <View style={styles.list_row_container}>
                 { post.imageUrl != "" &&  <Image source={{uri: post.imageUrl.toString()}} style={styles.list_row_image}></Image>}
                 { post.imageUrl == "" &&  <Image source={require("../assets/avatar.jpeg")} style={styles.list_row_image}></Image>}
                 <View style={styles.list_row_text_container}>
                     <Text style={styles.list_row_id}>{post.id}</Text>
                     <Text style={styles.list_row_name}>{post.text}</Text>
-
+                    <TouchableHighlight onPress={()=>navigation.navigate("Edit Post Screen")}>Edit Post</TouchableHighlight>
+                    <TouchableHighlight onPress={()=>removePost(post.id)}>Remove Post</TouchableHighlight>
 
                 </View>
             </View>
-        </TouchableHighlight>
     )
 }
 
 
-const Home: FC<{ navigation: any, route: any }> = ({ navigation, route }) => {
+const UserPosts: FC<{ navigation: any, route: any }> = ({ navigation, route }) => {
     const [data, setData] = useState<Array<Post>>()
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
 
-    //void callback function
-    const openDetails = (post:Post)=>{
-        console.log("on press " + post.id)
-        navigation.navigate('Post Details', {post: post})
-    }
-
     useEffect(()=>{
         navigation.addListener('focus',()=>{
-            reloadData()
+            var userID="213"
+            reloadData(userID)
         })
     },[navigation])
 
-    const reloadData = async ()=>{
+    const reloadData = async (userID:String)=>{
         setIsLoading(true)
-        const postData = await PostModel.getAllPosts()
+        const postData = await PostModel.getUserPosts(userID)
         setData(postData)
         setIsLoading(false)
     }
 
     return (
+        
         <View style={styles.home_container}>
+          {/*   <NavigationContainer>
+            <UserPostsStack.Navigator screenOptions={{ title: 'Apply to all' }}>
+            <UserPostsStack.Screen name="Edit Post Screen" component={EditPostScreen} />
+            </UserPostsStack.Navigator>
+            </NavigationContainer> */}
             <FlatList
                 data={data}
                 keyExtractor={item => item.id.toString()}
-                renderItem={({ item }) => (<PostListRow post={item} onItemClick={openDetails} />)}
+                renderItem={({ item }) => (<UserPostListRow post={item} navigation={navigation} />)}
             ></FlatList>
             <View style={styles.activity_indicator}>
                 <ActivityIndicator visible={isLoading}></ActivityIndicator>
@@ -70,8 +78,6 @@ const styles = StyleSheet.create({
     },
     list_row_container: {
         height: 150,
-        // width: "100%",
-        // backgroundColor: "grey",
         flexDirection: "row",
         elevation: 4,
         borderRadius: 3,
@@ -102,4 +108,4 @@ const styles = StyleSheet.create({
         position: "absolute"
     }
 })
-export default Home
+export default UserPosts

@@ -10,6 +10,7 @@ const getAllUsers = async () => {
       const user:User ={
         email: element.userName,
         password: element.password,
+        imageUri:element.imgUri
       }
       users.push(user)
     });
@@ -19,6 +20,8 @@ const getAllUsers = async () => {
   }
   return users
 };
+
+
 const addUser = async (user: User) => {
   const res = await apiClient.post("/auth/register",{
     email:user.email,
@@ -63,6 +66,23 @@ const addUser = async (user: User) => {
       console.log("addGoogleUser fail");
     }};
 
+const updateUser = async (user: User,oldEmail:String) => {
+  if(user.email===res.data.email){
+    const res = await apiClient.post("/user/edit",{
+      oldEmail:oldEmail,
+      newEmail:user.email,
+      password:user.password,
+      imageUri:user.imageUri
+    });   
+    if(res.ok){
+      console.log("update User success");
+      
+    }else {
+      console.log("update User fail");
+  }};
+}
+
+
 const loginUser =async (user:User) => {
   const res = await apiClient.post("/auth/login",{
     email:user.email,
@@ -97,11 +117,14 @@ const uploadImage = async (imageUri:String)=> {
       return null
   }
 }
+
+
 export default {
   getAllUsers,
   addUser,
   loginUser,
   uploadImage,
   addGoogleUser,
+  updateUser
 };
 
