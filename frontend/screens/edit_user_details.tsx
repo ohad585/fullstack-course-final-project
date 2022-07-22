@@ -5,10 +5,7 @@ import COLORS from "../constants/colors";
 import ActivityIndicator from "./component/custom_activity_indicator";
 import CustomImagePicker from "./component/custom_image_picker";
 
-const Edit_User: FC<{ navigation: any; route: any }> = ({
-    navigation,
-    route,
-  }) => {
+const Edit_User: FC<{ navigation: any; user:User }> = ({navigation,user}) => {
     const [isLoading,setIsLoading] =useState<boolean>(false)
     const [UserName,setUserName] = useState<String>("")
     const [Password,setPassword] = useState<String>("")
@@ -29,11 +26,15 @@ const Edit_User: FC<{ navigation: any; route: any }> = ({
           user.imageUri = url
           console.log("saving image : " + url) 
       }
+      
         await UserModel.updateUser(user)
         setIsLoading(false)
         navigation.goBack()
       }
     }
+
+
+
 
     const onImageSelected = (uri:String)=>{
       console.log("onImageSelected " + uri)
@@ -43,10 +44,10 @@ const Edit_User: FC<{ navigation: any; route: any }> = ({
       <ScrollView>
       <View style={styles.container}>
       <View style={styles.image} >
-         <CustomImagePicker onImageSelected={onImageSelected}></CustomImagePicker>
+        <CustomImagePicker onImageSelected={onImageSelected}></CustomImagePicker>
       </View>
-      <TextInput style={styles.textInput} onChangeText={setUserName} placeholder="UserName" keyboardType="default"></TextInput>
-      <TextInput style={styles.textInput} onChangeText={setPassword} placeholder="Password" keyboardType="default"></TextInput>
+      <TextInput style={styles.textInput} onChangeText={setUserName} placeholder={user.email.toString()} keyboardType="default"></TextInput>
+      <TextInput style={styles.textInput} onChangeText={setPassword} placeholder={user.password.toString()} keyboardType="default"></TextInput>
 
       <TouchableHighlight
         underlayColor={COLORS.clickBackground} 
@@ -56,6 +57,8 @@ const Edit_User: FC<{ navigation: any; route: any }> = ({
         style={styles.button}>
          <Text style={styles.buttonText}>Save</Text>
        </TouchableHighlight>
+
+       
        <View style={styles.activity_indicator}>
         <ActivityIndicator visible ={isLoading}></ActivityIndicator> 
        </View>

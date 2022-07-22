@@ -3,13 +3,15 @@ import { View, Text, TouchableHighlight, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import EditUserDetailsScreen from "../screens/edit_user_details"
+import {User} from "../model/user_model"
 
 const UserDetailsStack = createNativeStackNavigator();
 
 
-const UserDetails: FC<{ navigation: any; route: any }> = ({
+const UserDetails: FC<{ navigation: any; route: any ,user:User}> = ({
     navigation,
     route,
+    user
   }) => {
     const [userID ,setUserID] = useState<String>("")
     const [userMail ,setUserMail] = useState<String>("")
@@ -17,10 +19,14 @@ const UserDetails: FC<{ navigation: any; route: any }> = ({
     const [userImgUri ,setUserImgUri] = useState<String>("")
 
     React.useEffect(()=>{
-        if(route.params?.id){
-            setUserID(route.params.id)
-        }
-    })
+      if(route.params?.user){
+        setUserMail(route.params.user.email)
+        setUserPassword(route.params.user.password)
+        setUserImgUri(route.params.user.imageUrl)
+      }
+  })
+    
+
 
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -32,7 +38,7 @@ const UserDetails: FC<{ navigation: any; route: any }> = ({
         <Text>user mail: {userMail}</Text>
         <Text>user Password: {userPassword}</Text>
         <Text>user Img: {userImgUri}</Text>
-        <TouchableHighlight onPress={()=>navigation.navigate("Edit User Screen")}>edit</TouchableHighlight>
+        <TouchableHighlight onPress={()=>navigation.navigate("Edit User Details"),{user:user}}>edit</TouchableHighlight>
 
 
       </View>
