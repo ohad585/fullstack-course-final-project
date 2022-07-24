@@ -47,7 +47,7 @@ const Login: FC<{ navigation: any; route: any }> = ({
       if(usrC==null){
         alert("Google Login failed")
       }else {
-        navigation.navigate("Home")
+        navigation.navigate("Home",{_id:usrC._id,accessToken:usrC.access_token,refreshToken:usrC.refresh_token})
       }
     }
 

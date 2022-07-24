@@ -10,17 +10,17 @@ export type Post = {
 
 
 
-const getAllPosts = async () => {
-  const posts = await PostApi.getAllPosts()
+const getAllPosts = async (accessToken:String) => {
+  const posts = await PostApi.getAllPosts(accessToken)
   return posts
 };
-const addPost = async (p: Post) => {
+const addPost = async (p: Post,accessToken:String) => {
   
-  await PostApi.addPost(p)
+  return await PostApi.addPost(p,accessToken)
 };
 
-const uploadImage = async (imageUri:String)=> {
-  const url = await PostApi.uploadImage(imageUri)
+const uploadImage = async (imageUri:String,accessToken:String)=> {
+  const url = await PostApi.uploadImage(imageUri,accessToken)
   return url
 }
 

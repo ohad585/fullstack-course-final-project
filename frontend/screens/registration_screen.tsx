@@ -23,18 +23,18 @@ const Add_User: FC<{ navigation: any; route: any }> = ({
           password:Password,
           imageUri: ''
         }
+        const usrC = await UserModel.addUser(user)
         if(imageUri != ""){
           console.log("saving image")
-          const url = await UserModel.uploadImage(imageUri)
+          const url = await UserModel.uploadImage(imageUri,usrC?.access_token)
           user.imageUri = url
           console.log("saving image : " + url) 
       }
-        const usrC = await UserModel.addUser(user)
         setIsLoading(false)
         if(usrC==null){
           alert("Somthing went wrong")
         }else{
-          navigation.navigate("Home")
+          navigation.navigate("Home",{_id:usrC._id,accessToken:usrC.access_token,refreshToken:usrC.refresh_token})
         }
       }
     }

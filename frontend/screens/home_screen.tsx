@@ -8,7 +8,11 @@ import {
   TouchableHighlight,
 } from "react-native";
 
+import Ionicons from "@expo/vector-icons/Ionicons";
+
+
 import COLORS from "../constants/colors";
+import { UserCredentials } from "../model/user_model";
 
 import  ActivityIndicator  from "./component/custom_activity_indicator";
 
@@ -30,9 +34,40 @@ import  ActivityIndicator  from "./component/custom_activity_indicator";
 // };
 
 const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
+
+  const TopBarAddButton: FC<{onClick:()=>void}> = ({onClick})=>{
+    return(
+        <TouchableHighlight onPress={()=>{onClick()}} underlayColor ={COLORS.clickBackground}>
+            <Ionicons name={"add-outline"} size={40} color={"grey"} />
+        </TouchableHighlight>
+    )
+}
+
+
+
+ 
+
   //const [data,setData] = useState<Array<Student>>();
   const [isLoading,setIsLoading] = useState<boolean>(false);
-
+  const [userInfo,setUserInfo] = useState<UserCredentials>({_id:"",access_token:"",refresh_token:""});
+  const [accessToken,setAccessToken] = useState<String>("")
+  const openAddPost = ()=>{
+    navigation.navigate("Add Post",{_id:userInfo._id,accessToken:userInfo.access_token,refreshToken:userInfo.refresh_token})
+  }
+  React.useEffect(()=>{
+    const usrc:UserCredentials = {
+      _id:route.params._id,
+      access_token:route.params.accessToken,
+      refresh_token:route.params.refreshToken
+    }
+    console.log("USERC "+usrc._id);
+    setUserInfo(usrc)
+    setAccessToken(route.params.accessToken)
+    console.log("USERINFO "+userInfo._id);
+    console.log("AccesToken "+accessToken);
+    navigation.setOptions({headerRight: ()=>{return (<TopBarAddButton onClick={openAddPost}></TopBarAddButton>)}})
+    
+  },[route.params?._id])
   
 
   const openDetails = (id:String) =>{
@@ -46,6 +81,8 @@ const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
       reloadData() 
     })
   },[navigation])
+
+  
   
   const reloadData = async ()=>{
     setIsLoading(true)

@@ -21,26 +21,14 @@ const Tab = createBottomTabNavigator();
 
 const HomeStack = createNativeStackNavigator();
 
-const TopBarAddButton: FC<{onClick:()=>void}> = ({onClick})=>{
-    return(
-        <TouchableHighlight onPress={()=>{onClick()}} underlayColor ={COLORS.clickBackground}>
-            <Ionicons name={"add-outline"} size={40} color={"grey"} />
-        </TouchableHighlight>
-    )
-}
-
 const HomeStackScreen: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
-    const openAddPost = ()=>{
-        navigation.navigate("Add Post")
-    }
+  
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen name="Landing" component={LandingScreen} options={{
         headerShown:false
       }}/>
-      <HomeStack.Screen name="Home" component={HomeScreen} options={{
-          headerRight: ()=>{return (<TopBarAddButton onClick={openAddPost}></TopBarAddButton>)},
-          }} />
+      <HomeStack.Screen name="Home" component={HomeScreen}></HomeStack.Screen>
       <HomeStack.Screen name="Login" component={LoginScreen} />
       <HomeStack.Screen name="Register" component={RegistrationScreen} />
       <HomeStack.Screen name="Add Post" component={AddPostScreen} />

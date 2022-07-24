@@ -27,9 +27,9 @@ const loginUser = async (user: User) => {
 
   return await UserApi.loginUser(user);
 };
-const uploadImage = async (imageUri: String) => {
+const uploadImage = async (imageUri: String,accessToken:String) => {
   console.log("User upload image ");
-  return await UserApi.uploadImage(imageUri);
+  return await UserApi.uploadImage(imageUri,accessToken);
 };
 
 export default {
