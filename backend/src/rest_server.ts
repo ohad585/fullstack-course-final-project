@@ -32,7 +32,8 @@ app.use("/user",user_routes)
 import file_route from "./routes/files_routes"
 app.use("/file",file_route)
 
-app.use("/uploads",express.static('uploads'))
+app.use("/uploads/post",express.static('uploads'))
+app.use("/uploads/profile",express.static('uploads'))
 
 // import swaggerUI from "swagger-ui-express";
 // import swaggerJsDoc from "swagger-jsdoc";

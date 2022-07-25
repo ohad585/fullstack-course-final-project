@@ -13,16 +13,18 @@ const getUserPosts=async(UserID:String)=>{
 };
 
 
-const getAllPosts = async () => {
-  const posts = await PostApi.getAllPosts()
+const getAllPosts = async (accessToken:String) => {
+  const posts = await PostApi.getAllPosts(accessToken)
   return posts
 };
-const addPost = async (p: Post) => {
-  await PostApi.addPost(p)
+
+const addPost = async (p: Post,accessToken:String) => {
+  
+  return await PostApi.addPost(p,accessToken)
 };
 
-const uploadImage = async (imageUri:String)=> {
-  const url = await PostApi.uploadImage(imageUri)
+const uploadImage = async (imageUri:String,accessToken:String)=> {
+  const url = await PostApi.uploadImage(imageUri,accessToken)
   return url
 }
 const updatePost = async (post: Post) => {

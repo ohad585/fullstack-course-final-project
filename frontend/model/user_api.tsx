@@ -103,7 +103,7 @@ const loginUser =async (user:User) => {
   }
 }
 
-const uploadImage = async (imageUri:String)=> {
+const uploadImage = async (imageUri:String,accessToken:String)=> {
   console.log("uploadImage")
   const formData = new FormData()
   formData.append('file',{name: 'name', type:'image/jpeg', uri: imageUri})

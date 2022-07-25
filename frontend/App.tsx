@@ -25,7 +25,6 @@ const Tab = createBottomTabNavigator();
 
 const HomeStack = createNativeStackNavigator();
 
-
 //component of add post btn
 const TopBarAddButton: FC<{onClick:()=>void}> = ({onClick})=>{
     return(
@@ -36,17 +35,19 @@ const TopBarAddButton: FC<{onClick:()=>void}> = ({onClick})=>{
 }
 
 const HomeStackScreen: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
-    const openAddPost = ()=>{
-        navigation.navigate("Add Post")
-    }
+  const openAddPost = ()=>{
+
+  }
   return (
     <HomeStack.Navigator>
 
       <HomeStack.Screen name="Landing" component={LandingScreen} options={{
         headerShown:false
       }}/>
+
       <HomeStack.Screen name="Home" component={HomeScreen} 
       options={{headerRight: ()=>{return (<TopBarAddButton onClick={openAddPost}></TopBarAddButton>)}}} />
+      <HomeStack.Screen name="Home" component={HomeScreen}></HomeStack.Screen>
       <HomeStack.Screen name="Login" component={LoginScreen} />
       <HomeStack.Screen name="Register" component={RegistrationScreen} />
       <HomeStack.Screen name="Add Post" component={AddPostScreen} />

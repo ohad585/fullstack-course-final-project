@@ -24,8 +24,8 @@ const getUserPosts=async(userID: String)=>{
 };
 
 
-const getAllPosts = async () => {
-  const res = await apiClient.get("/post/");
+const getAllPosts = async (accessToken:String) => {
+  const res = await apiClient.setHeader("authorization",accessToken.toString()).get("/post/");
   let posts = Array<Post>()
   
   if(res.data){
@@ -44,7 +44,11 @@ const getAllPosts = async () => {
   return posts
 };
 
-const addPost = async (p: Post) => {
+const addPost = async (p: Post,accessToken:String) => {
+  console.log("Token on add post API "+accessToken);
+  apiClient.addAsyncRequestTransform(request =>async () => {
+    request.headers['authorization'] = "barer " + accessToken
+  })
   const res = await apiClient.post("/post",{
     sender: p.id,
     text: p.text,
@@ -59,7 +63,7 @@ const addPost = async (p: Post) => {
   }};
 
 
-  const uploadImage = async (imageUri:String)=> {
+  const uploadImage = async (imageUri:String,accessToken:String)=> {
     console.log("uploadImage")
     const formData = new FormData()
     formData.append('file',{name: 'name', type:'image/jpeg', uri: imageUri})
