@@ -44,7 +44,6 @@ const HomeStackScreen: FC<{ navigation: any; route: any }> = ({ navigation, rout
       <HomeStack.Screen name="Landing" component={LandingScreen} options={{
         headerShown:false
       }}/>
-
       <HomeStack.Screen name="Home" component={HomeScreen} />
       <HomeStack.Screen name="Login" component={LoginScreen} />
       <HomeStack.Screen name="Register" component={RegistrationScreen} />
