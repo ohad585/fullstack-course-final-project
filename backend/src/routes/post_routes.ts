@@ -4,7 +4,7 @@ import { getAllPosts, getPostById, deletePostById, createNewPost,updatePostMessa
 import authenticate from '../common/auth_middleware'
 
 
-router.get('/',authenticate,getAllPosts)
+router.get('/',getAllPosts)
 
 router.post('/',authenticate,createNewPost)
 

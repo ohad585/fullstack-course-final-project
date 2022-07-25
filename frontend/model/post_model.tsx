@@ -13,8 +13,8 @@ const getUserPosts=async(UserID:String)=>{
 };
 
 
-const getAllPosts = async (accessToken:String) => {
-  const posts = await PostApi.getAllPosts(accessToken)
+const getAllPosts = async () => {
+  const posts = await PostApi.getAllPosts()
   return posts
 };
 

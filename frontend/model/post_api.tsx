@@ -24,16 +24,16 @@ const getUserPosts=async(userID: String)=>{
 };
 
 
-const getAllPosts = async (accessToken:String) => {
-  const res = await apiClient.setHeader("authorization",accessToken.toString()).get("/post/");
+const getAllPosts = async () => {
+  const res = await apiClient.get("/post/");
   let posts = Array<Post>()
   
   if(res.data){
     res.data.forEach((element) => {
       const p:Post ={
         id: element.sender,
-        text: element.text,
-        imageUrl: element.imageUri
+        text: element.message,
+        imageUrl: element.imgUrl
       }
       posts.push(p)
     });

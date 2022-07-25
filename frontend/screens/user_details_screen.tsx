@@ -37,7 +37,9 @@ const UserDetails: FC<{ navigation: any; route: any ,user:User}> = ({
         <Text>user mail: {userMail}</Text>
         <Text>user Password: {userPassword}</Text>
         <Text>user Img: {userImgUri}</Text>
-        <TouchableHighlight onPress={()=>navigation.navigate("Edit User Details",{user:user})}>edit</TouchableHighlight>
+        <TouchableHighlight onPress={()=>navigation.navigate("Edit User Details",{user:user})}>
+          <Text>edit</Text>
+        </TouchableHighlight>
 
 
       </View>
