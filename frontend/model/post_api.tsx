@@ -1,8 +1,27 @@
 import apiClient from "./ApiClient";
 import { Post } from "./post_model";
-import { User } from "./user_model";
+import { User, UserCredentials } from "./user_model";
 
+const renewToken = async (userC:UserCredentials)=>{
+  console.log("Refreshing token");
+  
+  apiClient.addAsyncRequestTransform(request =>async () => {
+    request.headers['authorization'] = "barer " + userC.refresh_token
+  })
+  const res = await apiClient.get("/auth/refresh",{
+    _id:userC._id
+  });
 
+  console.log(res.ok + " " + res.data);
+  if(res.ok){
+    return ({
+      _id:res.data._id,
+      access_token:res.data.access_token,
+      refresh_token:res.data.refresh_token
+    })
+  }
+  
+}
 
 const getUserPosts=async(userID: String)=>{
   const res = await apiClient.get("/post/");
@@ -44,10 +63,10 @@ const getAllPosts = async () => {
   return posts
 };
 
-const addPost = async (p: Post,accessToken:String) => {
-  console.log("Token on add post API "+accessToken);
+const addPost = async (p: Post,userC:UserCredentials) => {
+  console.log("Token on add post API "+userC.access_token);
   apiClient.addAsyncRequestTransform(request =>async () => {
-    request.headers['authorization'] = "barer " + accessToken
+    request.headers['authorization'] = "barer " + userC.access_token
   })
   const res = await apiClient.post("/post",{
     sender: p.id,
@@ -59,11 +78,16 @@ const addPost = async (p: Post,accessToken:String) => {
     console.log("addPost success");
     
   }else {
-    console.log("addPost fail");
+    console.log("addPost fail ");
+    if(res.problem.toString()==="NETWORK_ERROR"){
+        const data = await renewToken(userC)
+        console.log(data);
+        
+    }
   }};
 
 
-  const uploadImage = async (imageUri:String,accessToken:String)=> {
+  const uploadImage = async (imageUri:String,userC:UserCredentials)=> {
     console.log("uploadImage")
     const formData = new FormData()
     formData.append('file',{name: 'name', type:'image/jpeg', uri: imageUri})

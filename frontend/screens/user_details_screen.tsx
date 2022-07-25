@@ -40,8 +40,6 @@ const UserDetails: FC<{ navigation: any; route: any ,user:User}> = ({
         <TouchableHighlight onPress={()=>navigation.navigate("Edit User Details",{user:user})}>
           <Text>edit</Text>
         </TouchableHighlight>
-
-
       </View>
     );
   };

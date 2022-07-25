@@ -38,13 +38,13 @@ const Add_Post: FC<{ navigation: any; route: any }> = ({
         }
         if(imageUri != ""){
           console.log("saving image")
-          const url = await PostModel.uploadImage(imageUri,userInfo?._id)
+          const url = await PostModel.uploadImage(imageUri,userInfo)
           p.imageUrl = url
           console.log("saving image : " + url) 
       }
       console.log("Token on save "+userInfo.access_token);
       
-        await PostModel.addPost(p,userInfo.access_token)
+        await PostModel.addPost(p,userInfo)
         setIsLoading(false)
         navigation.goBack()
       }

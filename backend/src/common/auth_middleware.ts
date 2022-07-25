@@ -15,7 +15,7 @@ const authMiddleware = async (req:Request,response:Response,next:NextFunction)=>
         if (err != null){
             console.log("Verify error "+err.message);
             
-            return response.sendStatus(StatusCodes.FORBIDDEN)
+            return response.sendStatus(StatusCodes.PROXY_AUTHENTICATION_REQUIRED)
         }
         req.body._id = userId
         next()

@@ -137,11 +137,15 @@ import { RequestInfo, RequestInit } from 'node-fetch';
     // validate refresh token
     let token = req.headers["authorization"];
     if (token == undefined || token == null) {
+      console.log("Token in null");
+      
       return res.sendStatus(StatusCodes.FORBIDDEN);
     }
     token = token.split(" ")[1];
     jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, async (err, userId) => {
       if (err != null) {
+        console.log("Token not valid");
+        
         return res.sendStatus(StatusCodes.FORBIDDEN);
       }
       req.body._id = userId;
@@ -149,6 +153,8 @@ import { RequestInfo, RequestInit } from 'node-fetch';
       try {
         const user = await User.findById(userId);
         if (user.refreshToken != token) {
+          console.log("Token dosent fit refreshToken");
+          
           user.refreshToken = "";
           await user.save();
           return res.status(StatusCodes.FORBIDDEN).send({ error: err.message });
@@ -164,6 +170,8 @@ import { RequestInfo, RequestInit } from 'node-fetch';
           {}
         );
         user.refreshToken = refreshToken;
+        console.log("Renew success");
+        
         await user.save();
         res.status(StatusCodes.OK).send({
           access_token: accessToken,

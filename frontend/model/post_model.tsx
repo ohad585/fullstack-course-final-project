@@ -1,4 +1,5 @@
 import PostApi from "./post_api"
+import { UserCredentials } from "./user_model";
 
 
 export type Post = {
@@ -18,13 +19,13 @@ const getAllPosts = async () => {
   return posts
 };
 
-const addPost = async (p: Post,accessToken:String) => {
+const addPost = async (p: Post,userC:UserCredentials) => {
   
-  return await PostApi.addPost(p,accessToken)
+  return await PostApi.addPost(p,userC)
 };
 
-const uploadImage = async (imageUri:String,accessToken:String)=> {
-  const url = await PostApi.uploadImage(imageUri,accessToken)
+const uploadImage = async (imageUri:String,userC:UserCredentials)=> {
+  const url = await PostApi.uploadImage(imageUri,userC)
   return url
 }
 const updatePost = async (post: Post) => {

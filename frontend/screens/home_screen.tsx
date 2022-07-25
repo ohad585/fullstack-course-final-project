@@ -62,7 +62,6 @@ const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
   };
 
   const [data, setData] = useState<Array<Post>>();
-  //const [data,setData] = useState<Array<Student>>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<UserCredentials>({
     _id: "",
