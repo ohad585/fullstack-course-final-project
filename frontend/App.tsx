@@ -45,8 +45,7 @@ const HomeStackScreen: FC<{ navigation: any; route: any }> = ({ navigation, rout
         headerShown:false
       }}/>
 
-      <HomeStack.Screen name="Home" component={HomeScreen} 
-      options={{headerRight: ()=>{return (<TopBarAddButton onClick={openAddPost}></TopBarAddButton>)}}} />
+      <HomeStack.Screen name="Home" component={HomeScreen} />
       <HomeStack.Screen name="Login" component={LoginScreen} />
       <HomeStack.Screen name="Register" component={RegistrationScreen} />
       <HomeStack.Screen name="Add Post" component={AddPostScreen} />
