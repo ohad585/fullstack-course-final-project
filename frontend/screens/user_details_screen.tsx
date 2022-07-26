@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import EditUserDetailsScreen from "../screens/edit_user_details"
 import {User} from "../model/user_model"
-
+import { UserCredentials } from "../model/user_model";
 //const UserDetailsStack = createNativeStackNavigator();
 
 
@@ -16,14 +16,18 @@ const UserDetails: FC<{ navigation: any; route: any ,user:User}> = ({
     const [userMail ,setUserMail] = useState<String>("")
     const [userPassword ,setUserPassword] = useState<String>("")
     const [userImgUri ,setUserImgUri] = useState<String>("")
+    const [userInfo,setUserInfo] = useState<UserCredentials>({_id:"",access_token:"",refresh_token:""});
+
 
     React.useEffect(()=>{
-      if(route.params?.user){
-        setUserMail(route.params.user.email)
-        setUserPassword(route.params.user.password)
-        setUserImgUri(route.params.user.imageUrl)
+      const usrc:UserCredentials = {
+        _id:route.params._id,
+        access_token:route.params.accessToken,
+        refresh_token:route.params.refreshToken
       }
-  })
+      console.log(usrc);
+      setUserInfo(usrc)
+    },[route.params?._id])
     
 
 

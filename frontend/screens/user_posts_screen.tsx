@@ -12,7 +12,7 @@ import EditPostScreen from "../screens/edit_post_screen"
 
 //const UserPostsStack = createNativeStackNavigator();
 const removePost = async (postID:String) =>{
-   await postModel.removePost(postID);
+   await PostModel.removePost(postID);
 }
 
 const UserPostListRow: FC<{ post: Post, navigation: any}> = ({ post  ,navigation}) => {
@@ -23,8 +23,12 @@ const UserPostListRow: FC<{ post: Post, navigation: any}> = ({ post  ,navigation
                 <View style={styles.list_row_text_container}>
                     <Text style={styles.list_row_id}>{post.id}</Text>
                     <Text style={styles.list_row_name}>{post.text}</Text>
-                    <TouchableHighlight onPress={()=>navigation.navigate("Edit Post Screen")}>Edit Post</TouchableHighlight>
-                    <TouchableHighlight onPress={()=>removePost(post.id)}>Remove Post</TouchableHighlight>
+                    <TouchableHighlight onPress={()=>navigation.navigate("Edit Post Screen")}>
+                        <Text>Edit Post</Text>
+                        </TouchableHighlight>
+                    <TouchableHighlight onPress={()=>removePost(post.id)}>
+                        <Text>Remove Post</Text>
+                        </TouchableHighlight>
 
                 </View>
             </View>

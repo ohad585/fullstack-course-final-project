@@ -17,6 +17,8 @@ import UserPostsScreen from "./screens/user_posts_screen"
 import PostDetailsScreen from "./screens/post_screen"
 import EditUserDetailsScreen from "./screens/edit_user_details"
 import EditPostScreen from "./screens/edit_post_screen"
+import ChatScreen from "./screens/chat_screen"
+
 
 
 
@@ -26,18 +28,8 @@ const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
 
 //component of add post btn
-const TopBarAddButton: FC<{onClick:()=>void}> = ({onClick})=>{
-    return(
-        <TouchableHighlight onPress={()=>{onClick()}} underlayColor ={COLORS.clickBackground}>
-            <Ionicons name={"add-outline"} size={40} color={"grey"} />
-        </TouchableHighlight>
-    )
-}
 
 const HomeStackScreen: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
-  const openAddPost = ()=>{
-
-  }
   return (
     <HomeStack.Navigator>
 
@@ -45,6 +37,7 @@ const HomeStackScreen: FC<{ navigation: any; route: any }> = ({ navigation, rout
         headerShown:false
       }}/>
       <HomeStack.Screen name="Home" component={HomeScreen} />
+
       <HomeStack.Screen name="Login" component={LoginScreen} />
       <HomeStack.Screen name="Register" component={RegistrationScreen} />
       <HomeStack.Screen name="Add Post" component={AddPostScreen} />
@@ -53,6 +46,8 @@ const HomeStackScreen: FC<{ navigation: any; route: any }> = ({ navigation, rout
       <HomeStack.Screen name="Post Details" component={PostDetailsScreen} />
       <HomeStack.Screen name="Edit User Details" component={EditUserDetailsScreen} />
       <HomeStack.Screen name="Edit Post Screen" component={EditPostScreen} />
+      <HomeStack.Screen name="Chat" component={ChatScreen} />
+
 
       
 
@@ -89,8 +84,9 @@ const App: FC = () => {
         <Tab.Screen name="HomeStack" component={HomeStackScreen} options={{headerShown :false,title:"Home"}}></Tab.Screen>
         <Tab.Screen name="Login" component={LoginScreen}></Tab.Screen>
         <Tab.Screen name="Register" component={RegistrationScreen}></Tab.Screen>
-        <Tab.Screen name="UserDetails" component={UserDetailsScreen}></Tab.Screen>
-        <Tab.Screen name="UserPosts" component={UserPostsScreen}></Tab.Screen>
+       <Tab.Screen name="User Posts" component={UserPostsScreen}></Tab.Screen>
+       <Tab.Screen name="Chat" component={ChatScreen}></Tab.Screen>
+
 
 
 
@@ -98,6 +94,8 @@ const App: FC = () => {
     </NavigationContainer>
   );
 };
+
+//<Tab.Screen name="User Details" component={UserDetailsScreen}></Tab.Screen>
 
 
 const styles = StyleSheet.create({

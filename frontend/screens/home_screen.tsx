@@ -61,6 +61,28 @@ const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
     );
   };
 
+  const TopBarUserDetailsBtn: FC<{ onClick: () => void }> = ({ onClick }) => {
+    return (
+      <TouchableHighlight
+        onPress={() => {
+          onClick();
+        }}
+        underlayColor={COLORS.clickBackground}
+      >
+        <Ionicons name={"person-circle-outline"} size={40} color={"grey"} />
+      </TouchableHighlight>
+    );
+  };
+
+
+
+
+
+
+
+
+
+
   const [data, setData] = useState<Array<Post>>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<UserCredentials>({
@@ -76,6 +98,16 @@ const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
       refreshToken: userInfo.refresh_token,
     });
   };
+
+  const openUserDetails = () => {
+    navigation.navigate("User Details", {
+      _id: userInfo._id,
+      accessToken: userInfo.access_token,
+      refreshToken: userInfo.refresh_token,
+    });
+  };
+
+
   React.useEffect(() => {
     const usrc: UserCredentials = {
       _id: route.params._id,
@@ -92,9 +124,14 @@ const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
         return <TopBarAddButton onClick={openAddPost}></TopBarAddButton>;
       },
     });
+    navigation.setOptions({
+        headerRight: () => {
+          return <TopBarUserDetailsBtn onClick={openUserDetails}></TopBarUserDetailsBtn>;
+        },
+      });
   }, [route.params?._id]);
 
-  const openDetails = (id: String) => {
+  const openPostDetails = (id: String) => {
     console.log("On press " + id);
     navigation.navigate("Details", { id: id });
   };
@@ -125,7 +162,7 @@ const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
         data={data}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <PostListRow post={item} onItemClick={openDetails} />
+          <PostListRow post={item} onItemClick={openPostDetails} />
         )}
       ></FlatList>
       <View style={styles.activity_indicator}>
