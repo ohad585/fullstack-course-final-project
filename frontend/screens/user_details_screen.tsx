@@ -3,21 +3,25 @@ import { View, Text, TouchableHighlight, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import EditUserDetailsScreen from "../screens/edit_user_details"
-import {User} from "../model/user_model"
+import UserModel, {User} from "../model/user_model"
 import { UserCredentials } from "../model/user_model";
-//const UserDetailsStack = createNativeStackNavigator();
 
 
-const UserDetails: FC<{ navigation: any; route: any ,user:User}> = ({
+const UserDetails: FC<{ navigation: any; route: any }> = ({
     navigation,
     route,
-    user
   }) => {
     const [userMail ,setUserMail] = useState<String>("")
     const [userPassword ,setUserPassword] = useState<String>("")
     const [userImgUri ,setUserImgUri] = useState<String>("")
     const [userInfo,setUserInfo] = useState<UserCredentials>({_id:"",access_token:"",refresh_token:""});
 
+    const getUser =async (id:String) => {
+      const user =  await UserModel.getUserById(route.params._id) 
+      setUserMail(user.email)
+      setUserPassword(user.password)
+      setUserImgUri(user.imageUri)
+     }
 
     React.useEffect(()=>{
       const usrc:UserCredentials = {
@@ -27,22 +31,22 @@ const UserDetails: FC<{ navigation: any; route: any ,user:User}> = ({
       }
       console.log(usrc);
       setUserInfo(usrc)
+      getUser(usrc._id)
     },[route.params?._id])
     
 
 
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-       {/*  <NavigationContainer>
-            <UserDetailsStack.Navigator screenOptions={{ title: 'Apply to all' }}>
-            <UserDetailsStack.Screen name="Edit User Screen" component={EditUserDetailsScreen} />
-            </UserDetailsStack.Navigator>
-            </NavigationContainer> */}
+       
         <Text>user mail: {userInfo._id}</Text>
         <Text>user Password: {userPassword}</Text>
         <Text>user Img: {userImgUri}</Text>
-        <TouchableHighlight onPress={()=>navigation.navigate("Edit User Details",{user:user})}>
-          <Text>edit</Text>
+        <TouchableHighlight onPress={()=>navigation.navigate("Edit User Details",{user:userInfo})}>
+          <Text>Edit My Details</Text>
+          </TouchableHighlight>
+        <TouchableHighlight onPress={()=>navigation.navigate("User Posts",{user:userInfo})}>
+        <Text>My Posts</Text>          
         </TouchableHighlight>
       </View>
     );

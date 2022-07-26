@@ -1,32 +1,40 @@
 import React, { FC, useEffect, useState } from "react"
 import { View, Text, Image, StyleSheet, FlatList, TouchableHighlight ,Button} from "react-native"
-
-import COLORS from "../constants/colors"
+import UserModel,{ UserCredentials } from "../model/user_model";
 import PostModel,{Post} from "../model/post_model"
-import UserModel from "../model/user_model"
 
 import ActivityIndicator from "./component/custom_activity_indicator"
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import EditPostScreen from "../screens/edit_post_screen"
 
-//const UserPostsStack = createNativeStackNavigator();
 const removePost = async (postID:String) =>{
    await PostModel.removePost(postID);
 }
+const senderName=async (senderID:String)=>{
+    return UserModel.getUserById(senderID)
+}
 
-const UserPostListRow: FC<{ post: Post, navigation: any}> = ({ post  ,navigation}) => {
+const UserPostListRow: FC<{ post: Post, navigation: any,route: any}> = ({ post  ,navigation,route}) => {
+    const [userInfo,setUserInfo] = useState<UserCredentials>({_id:"",access_token:"",refresh_token:""});
+    React.useEffect(()=>{
+        const usrc:UserCredentials = {
+          _id:route.params._id,
+          access_token:route.params.accessToken,
+          refresh_token:route.params.refreshToken
+        }
+        console.log(usrc);
+        setUserInfo(usrc)
+      },[route.params?._id])
+
     return (
             <View style={styles.list_row_container}>
                 { post.imageUrl != "" &&  <Image source={{uri: post.imageUrl.toString()}} style={styles.list_row_image}></Image>}
                 { post.imageUrl == "" &&  <Image source={require("../assets/avatar.jpeg")} style={styles.list_row_image}></Image>}
                 <View style={styles.list_row_text_container}>
-                    <Text style={styles.list_row_id}>{post.id}</Text>
+                    <Text style={styles.list_row_senderID}>{senderName(post.senderID)}</Text>
                     <Text style={styles.list_row_name}>{post.text}</Text>
-                    <TouchableHighlight onPress={()=>navigation.navigate("Edit Post Screen")}>
+                    <TouchableHighlight onPress={()=>navigation.navigate("Edit Post Screen",{post:post, userInfo:userInfo})}>
                         <Text>Edit Post</Text>
                         </TouchableHighlight>
-                    <TouchableHighlight onPress={()=>removePost(post.id)}>
+                    <TouchableHighlight onPress={()=>removePost(post.postID)}>
                         <Text>Remove Post</Text>
                         </TouchableHighlight>
 
@@ -39,12 +47,23 @@ const UserPostListRow: FC<{ post: Post, navigation: any}> = ({ post  ,navigation
 const UserPosts: FC<{ navigation: any, route: any }> = ({ navigation, route }) => {
     const [data, setData] = useState<Array<Post>>()
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [userInfo,setUserInfo] = useState<UserCredentials>({_id:"",access_token:"",refresh_token:""});
+    
 
+    React.useEffect(()=>{
+        const usrc:UserCredentials = {
+          _id:route.params._id,
+          access_token:route.params.accessToken,
+          refresh_token:route.params.refreshToken
+        }
+        console.log(usrc);
+        setUserInfo(usrc)
+      },[route.params?._id])
 
     useEffect(()=>{
         navigation.addListener('focus',()=>{
-            var userID="213"
-            reloadData(userID)
+           //var user=UserModel.getUserById(userInfo._id)
+            reloadData(userInfo._id)
         })
     },[navigation])
 
@@ -58,15 +77,10 @@ const UserPosts: FC<{ navigation: any, route: any }> = ({ navigation, route }) =
     return (
         
         <View style={styles.home_container}>
-          {/*   <NavigationContainer>
-            <UserPostsStack.Navigator screenOptions={{ title: 'Apply to all' }}>
-            <UserPostsStack.Screen name="Edit Post Screen" component={EditPostScreen} />
-            </UserPostsStack.Navigator>
-            </NavigationContainer> */}
             <FlatList
                 data={data}
-                keyExtractor={item => item.id.toString()}
-                renderItem={({ item }) => (<UserPostListRow post={item} navigation={navigation} />)}
+                keyExtractor={item => item.postID.toString()}
+                renderItem={({ item }) => (<UserPostListRow post={item} navigation={navigation} route={route} />)}
             ></FlatList>
             <View style={styles.activity_indicator}>
                 <ActivityIndicator visible={isLoading}></ActivityIndicator>
@@ -101,7 +115,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         marginBottom: 10
     },
-    list_row_id: {
+    list_row_senderID: {
         fontSize: 25
     },
     activity_indicator:{

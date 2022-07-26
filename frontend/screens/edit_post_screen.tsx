@@ -4,25 +4,38 @@ import PostModel,{Post} from "../model/post_model"
 import COLORS from "../constants/colors";
 import ActivityIndicator from "./component/custom_activity_indicator";
 import CustomImagePicker from "./component/custom_image_picker";
+import { UserCredentials } from "../model/user_model";
 
-const Edit_Post: FC<{ navigation: any; route: any, post:Post}> = ({navigation,route,post }) => {
+const Edit_Post: FC<{ navigation: any; route: any, post:Post, user:UserCredentials}> = ({navigation,route,post,user }) => {
     const [isLoading,setIsLoading] =useState<boolean>(false)
-    const [ID,setID] = useState<String>(post.id)
+    const [postID,setPostID] = useState<String>("")
+    const [senderID,setSenderID] = useState<String>("")
     const [text,setText] = useState<String>("")
     const [imageUrl,setImageUrl] = useState<String>("")
+    const [userInfo,setUserInfo] = useState<UserCredentials>({_id:"",access_token:"",refresh_token:""});
 
+    React.useEffect(()=>{
+      const usrc:UserCredentials = {
+        _id:route.params._id,
+        access_token:route.params.accessToken,
+        refresh_token:route.params.refreshToken
+      }
+      console.log(usrc);
+      setUserInfo(usrc)
+    },[route.params?._id])
 
     const onSave = async ()=>{
       setIsLoading(true)
       if(text!="" && imageUrl !="" ){
         const p:Post = {
-          id:ID,
+          postID:postID,
+          senderID:senderID,
           text:text,
           imageUrl: ''
         }
         if(imageUrl != ""){
           console.log("saving image")
-          const url = await PostModel.uploadImage(imageUrl)
+          const url = await PostModel.uploadImage(imageUrl,userInfo)
           p.imageUrl = url
           console.log("saving image : " + url) 
       }

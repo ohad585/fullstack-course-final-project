@@ -3,7 +3,8 @@ import { UserCredentials } from "./user_model";
 
 
 export type Post = {
-  id: String;
+  postID: String;
+  senderID:String;
   text: String;
   imageUrl: String;
 };
@@ -29,7 +30,7 @@ const uploadImage = async (imageUri:String,userC:UserCredentials)=> {
   return url
 }
 const updatePost = async (post: Post) => {
-  await PostApi.updatePost(post.id)
+  await PostApi.updatePost(post.postID)
 };
 
 const removePost = async (postID: String) => {

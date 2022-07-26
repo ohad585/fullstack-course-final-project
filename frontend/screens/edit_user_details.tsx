@@ -4,6 +4,7 @@ import UserModel,{User} from "../model/user_model"
 import COLORS from "../constants/colors";
 import ActivityIndicator from "./component/custom_activity_indicator";
 import CustomImagePicker from "./component/custom_image_picker";
+import { UserCredentials } from "../model/user_model";
 
 const Edit_User: FC<{ navigation: any; route:any }> = ({navigation, route}) => {
     const [isLoading,setIsLoading] =useState<boolean>(false)
@@ -11,15 +12,24 @@ const Edit_User: FC<{ navigation: any; route:any }> = ({navigation, route}) => {
     const [UserNameOld,setUserNameOld] = useState<String>("")
     const [Password,setPassword] = useState<String>("")
     const [imageUri,setImageUri] = useState<String>("")
+    const [userInfo,setUserInfo] = useState<UserCredentials>({_id:"",access_token:"",refresh_token:""});
 
+
+    const getUser=async (userID:String)=>{
+      return UserModel.getUserById(userID)
+  }
     React.useEffect(()=>{
-      if(route.params?.user){
-        setUserName(route.params.user.email)
-        setUserNameOld(route.params.user.email)
-        setPassword(route.params.user.password)
-        setImageUri(route.params.user.imageUrl)
+      const usrc:UserCredentials = {
+        _id:route.params._id,
+        access_token:route.params.accessToken,
+        refresh_token:route.params.refreshToken
       }
-})
+      console.log(usrc);
+      setUserInfo(usrc)
+      getUser(route.params._id)
+    },[route.params?._id])
+
+
     const onSave = async ()=>{
       setIsLoading(true)
       if(UserName!="" && Password !="" ){
@@ -30,7 +40,7 @@ const Edit_User: FC<{ navigation: any; route:any }> = ({navigation, route}) => {
         }
         if(imageUri != ""){
           console.log("saving image")
-          const url = await UserModel.uploadImage(imageUri)
+          const url = await UserModel.uploadImage(imageUri,userInfo.access_token)
           user.imageUri = url
           console.log("saving image : " + url) 
       }

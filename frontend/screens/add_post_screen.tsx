@@ -4,18 +4,23 @@ import PostModel,{Post} from "../model/post_model"
 import COLORS from "../constants/colors";
 import ActivityIndicator from "./component/custom_activity_indicator";
 import CustomImagePicker from './component/custom_image_picker'
-import { UserCredentials } from "../model/user_model";
+import UserModel,{ UserCredentials } from "../model/user_model";
 
 const Add_Post: FC<{ navigation: any; route: any }> = ({
     navigation,
     route,
   }) => {
     const [isLoading,setIsLoading] =useState<boolean>(false)
-    const [id,setId] = useState<String>("")
-    const [name,setName] = useState<String>("")
+    const [postID,setPostID] = useState<String>("")
+    const [senderID,setSenderID] = useState<String>("")
     const [text,setText] = useState<String>("")
     const [imageUri,setImageUri] = useState<String>("")
     const [userInfo,setUserInfo] = useState<UserCredentials>({_id:"",access_token:"",refresh_token:""});
+
+    const findSender= (senderID:String)=>{
+      return  UserModel.getUserById(senderID)        
+  }
+
     React.useEffect(()=>{
     const usrc:UserCredentials = {
       _id:route.params._id,
@@ -24,15 +29,17 @@ const Add_Post: FC<{ navigation: any; route: any }> = ({
     }
     console.log(usrc);
     setUserInfo(usrc)
+   
   },[route.params?._id])
 
 
     const onSave = async ()=>{
       setIsLoading(true)
     
-      if(id!="" && name !=""){
+      if(postID!="" ){
         const p:Post = {
-          id:id,
+          postID:postID,
+          senderID:senderID,
           text:text,
           imageUrl:'',
         }
@@ -60,12 +67,8 @@ const Add_Post: FC<{ navigation: any; route: any }> = ({
               <CustomImagePicker onImageSelected={onImageSelected}></CustomImagePicker>
           </View>
           <TextInput style={styles.textInput}
-              onChangeText={setId}
-              placeholder="ID"
-              keyboardType="default"></TextInput>
-          <TextInput style={styles.textInput}
-              onChangeText={setName}
-              placeholder="Name"
+              onChangeText={setText}
+              placeholder="Text"
               keyboardType="default"></TextInput>
           <TouchableHighlight
               onPress={onSave}

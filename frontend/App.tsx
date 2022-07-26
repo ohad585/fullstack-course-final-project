@@ -82,9 +82,6 @@ const App: FC = () => {
       >
 
         <Tab.Screen name="HomeStack" component={HomeStackScreen} options={{headerShown :false,title:"Home"}}></Tab.Screen>
-        <Tab.Screen name="Login" component={LoginScreen}></Tab.Screen>
-        <Tab.Screen name="Register" component={RegistrationScreen}></Tab.Screen>
-       <Tab.Screen name="User Posts" component={UserPostsScreen}></Tab.Screen>
        <Tab.Screen name="Chat" component={ChatScreen}></Tab.Screen>
 
 
