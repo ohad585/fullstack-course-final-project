@@ -21,6 +21,24 @@ const getAllUsers = async () => {
   return users
 };
 
+const getuserById = async (id:String) => {
+  console.log("UserAPI " + id);
+  const res = await apiClient.get("/user/"+id);
+  let user:User = {
+    email:"",
+    password:"",
+    imageUri:""
+  }
+  if(res.data){
+    user.email = res.data.email,
+    user.password = res.data.password,
+    user.imageUri =res.data.imgUri
+    }else{
+    console.log("getUserById failed");
+      
+    }
+  return user
+};
 
 const addUser = async (user: User) => {
   const res = await apiClient.post("/auth/register",{
@@ -125,6 +143,7 @@ export default {
   loginUser,
   uploadImage,
   addGoogleUser,
-  updateUser
+  updateUser,
+  getuserById
 };
 

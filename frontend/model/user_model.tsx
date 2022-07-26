@@ -37,7 +37,9 @@ const updateUser = async (user: User, oldEmail:String) => {
   await UserApi.updateUser(user,oldEmail)
 };
 
-
+const getUserById = async (id:String) => {
+  return await UserApi.getuserById(id)
+};
 
 
 export default {
@@ -46,5 +48,6 @@ export default {
   loginUser,
   uploadImage,
   addGoogleUser,
-  updateUser
+  updateUser,
+  getUserById
 };

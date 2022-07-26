@@ -12,7 +12,7 @@ import PostModel, { Post } from "../model/post_model";
 import ActivityIndicator from "./component/custom_activity_indicator";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import COLORS from "../constants/colors";
-import { UserCredentials } from "../model/user_model";
+import UserModel,{ UserCredentials } from "../model/user_model";
 
 const PostListRow: FC<{ post: Post; onItemClick: (id: String) => void }> = ({
   post,
@@ -109,6 +109,12 @@ const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
     });
   };
 
+  const getUser =async (id:String) => {
+
+   const user =  await UserModel.getUserById(route.params._id)   
+   
+  }
+
 
   React.useEffect(() => {
     const usrc: UserCredentials = {
@@ -119,8 +125,9 @@ const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
     console.log("USERC " + usrc._id);
     setUserInfo(usrc);
     setAccessToken(route.params.accessToken);
-    console.log("USERINFO " + userInfo._id);
-    console.log("AccesToken " + accessToken);
+    //console.log("USERINFO " + userInfo._id);
+    //console.log("AccesToken " + accessToken);
+    getUser(usrc._id)
     navigation.setOptions({
       headerRight: () => {
         return (

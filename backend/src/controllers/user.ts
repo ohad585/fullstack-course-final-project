@@ -6,13 +6,47 @@ import { use } from '../routes/post_routes';
 
 
 /**
+ * findUserById
+ * @param req html request
+ * @param res html respond
+ * @returns User
+ */
+export const findUserById =async (req: Request, res: Response) => {
+  
+  const id = req.params._id;  
+  console.log("FINDUSERBYID "+id);
+  
+  if (id == null || id == undefined) {
+    return res.status(400).send({ err: "no id provided" });
+  }
+
+  try {
+    const user = await UserModel.findById(id);
+    if (user == null) {
+      res.status(400).send({
+        err: "user doesnot exists",
+      });
+    } else {
+      console.log(user.email);
+      res.status(200).send(user);
+    }
+  } catch (err) {
+    res.status(400).send({
+      err: err.message,
+    });
+  }  
+}
+
+
+
+/**
  * findUserByEmail
  * @param req html request
  * @param res html respond
  * @returns User
  */
 export const findUserByEmail =async (req: Request, res: Response) => {
-    console.log("getPostById id=" + req.params.id);
+    console.log("findUserByEmail id=" + req.params.id);
   const email = req.params.email;
   if (email == null || email == undefined) {
     return res.status(400).send({ err: "no email provided" });

@@ -28,7 +28,7 @@ export const getAllPosts = async (req: Request, res: Response) => {
 };
 
 export const getPostById = async (req: Request, res: Response) => {
-  console.log("getPostById id=" + req.params.id);
+  //console.log("getPostById id=" + req.params.id);
   const id = req.params.id;
   if (id == null || id == undefined) {
     return res.status(400).send({ err: "no id provided" });

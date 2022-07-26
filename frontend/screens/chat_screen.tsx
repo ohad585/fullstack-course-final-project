@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     my_message: {
         marginTop:15,
         marginBottom:15,
-
+        flexWrap:"wrap",
         textAlign: 'left',
         backgroundColor : "powderblue",
         fontSize: 30,
