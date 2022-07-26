@@ -100,6 +100,8 @@ const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
   };
 
   const openUserDetails = () => {
+    console.log("OpenUserDetails " +userInfo._id + " " + userInfo.access_token);
+    
     navigation.navigate("User Details", {
       _id: userInfo._id,
       accessToken: userInfo.access_token,
@@ -121,14 +123,19 @@ const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
     console.log("AccesToken " + accessToken);
     navigation.setOptions({
       headerRight: () => {
-        return <TopBarAddButton onClick={openAddPost}></TopBarAddButton>;
+        return (
+          <View style={{flexDirection:"row"}}>
+        <TopBarAddButton onClick={openAddPost}></TopBarAddButton>
+        <TopBarUserDetailsBtn onClick={openUserDetails}></TopBarUserDetailsBtn>
+        </View>
+        )
       },
     });
-    navigation.setOptions({
-        headerRight: () => {
-          return <TopBarUserDetailsBtn onClick={openUserDetails}></TopBarUserDetailsBtn>;
-        },
-      });
+    // navigation.setOptions({
+    //     headerRight: () => {
+    //       return <TopBarUserDetailsBtn onClick={openUserDetails}></TopBarUserDetailsBtn>;
+    //     },
+    //   });
   }, [route.params?._id]);
 
   const openPostDetails = (id: String) => {

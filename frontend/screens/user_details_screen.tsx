@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useReducer, useState } from "react";
 import { View, Text, TouchableHighlight, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -38,7 +38,7 @@ const UserDetails: FC<{ navigation: any; route: any ,user:User}> = ({
             <UserDetailsStack.Screen name="Edit User Screen" component={EditUserDetailsScreen} />
             </UserDetailsStack.Navigator>
             </NavigationContainer> */}
-        <Text>user mail: {userMail}</Text>
+        <Text>user mail: {userInfo._id}</Text>
         <Text>user Password: {userPassword}</Text>
         <Text>user Img: {userImgUri}</Text>
         <TouchableHighlight onPress={()=>navigation.navigate("Edit User Details",{user:user})}>
