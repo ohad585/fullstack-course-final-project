@@ -11,15 +11,19 @@ const Edit_User: FC<{ navigation: any; route:any }> = ({navigation, route}) => {
     const [UserNameOld,setUserNameOld] = useState<String>("")
     const [Password,setPassword] = useState<String>("")
     const [imageUri,setImageUri] = useState<String>("")
+    const [accessToken,setAccessToken] = useState<String>("")
+    const [refreshToken,setRefreshToken] = useState<String>("")
 
     React.useEffect(()=>{
-      if(route.params?.user){
-        setUserName(route.params.user.email)
-        setUserNameOld(route.params.user.email)
-        setPassword(route.params.user.password)
-        setImageUri(route.params.user.imageUrl)
+      if(route.params?.email){
+        setUserName(route.params.email)
+        setUserNameOld(route.params.email)
+        setPassword(route.params.password)
+        setImageUri(route.params.imageUrl)
+        setAccessToken(route.params.accessToken)
+        setRefreshToken(route.params.refreshToken)
       }
-})
+    },route.params?.email)
     const onSave = async ()=>{
       setIsLoading(true)
       if(UserName!="" && Password !="" ){
@@ -30,7 +34,7 @@ const Edit_User: FC<{ navigation: any; route:any }> = ({navigation, route}) => {
         }
         if(imageUri != ""){
           console.log("saving image")
-          const url = await UserModel.uploadImage(imageUri)
+          const url = await UserModel.uploadImage(imageUri,accessToken)
           user.imageUri = url
           console.log("saving image : " + url) 
       }
