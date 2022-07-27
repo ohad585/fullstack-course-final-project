@@ -1,6 +1,8 @@
 import React, { FC, useState } from "react";
 import { View, Text ,StyleSheet ,Image, TextInput, TouchableHighlight, ScrollView} from "react-native";
 import COLORS from "../constants/colors";
+import {io} from "socket.io-client"
+
 
 
 const SentMessage: FC<{Message:String}> = ({ Message }) => {
@@ -15,7 +17,8 @@ const SentMessage: FC<{Message:String}> = ({ Message }) => {
   };
   const TextBox: FC<{}> = ({}) => {
     const sendMessage=(message:String)=>{
-        alert({message})
+      console.log(message);
+      //socket.emit("common:echo","Blaa")
     }
 
     const [text,setText] = useState<String>("")
@@ -30,6 +33,22 @@ const SentMessage: FC<{Message:String}> = ({ Message }) => {
   };
 
 const Chat: FC<{ }> = ({ }) => {
+  console.log("Socket starting");
+  const socket = io('http://localhost:3000')
+  socket.on("connect_error", (err) => {
+    //socket.auth.token = "abcd";
+    console.log("connect_error "+err);
+    socket.io.opts.transports = ["polling", "websocket"];
+
+    socket.connect();
+  });
+  socket.on("connect", () => {
+    console.log("client connected")
+  });
+  socket.on("disconnect", () => {
+    console.log(socket.id); // undefined
+  });
+
     return (
     <View>
         <SentMessage Message={"sent message"}></SentMessage>

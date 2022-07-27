@@ -7,7 +7,10 @@ type ImsMessage = {
 }
 
 export = (io:Server, socket:Socket) => {
+    
     const echoHandler = (payload:string) => {
+        console.log("Echo handler "+payload);
+
         socket.emit("common:echo", payload)
     }
  

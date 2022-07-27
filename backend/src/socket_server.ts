@@ -23,12 +23,18 @@ export const broadcastPostMessage = (message)=>{
 
 export const initSocketServer =  async (server: http.Server): Promise<Server> => {
     socketServer = new Server(server);
+    console.log("Initialize socket server");
+    
 
     await pubClient.connect()
     await subClient.connect() 
     socketServer.adapter(createAdapter(pubClient, subClient));
 
     socketServer.use(async (socket, next) => {
+        console.log("socket_server on Use");
+        socket.data.user="123"
+        
+        next()
         let token = socket.handshake.auth.token;
         if(token == null) return next(new Error('Authentication error'))
         token = token.split(' ')[1]
@@ -44,7 +50,7 @@ export const initSocketServer =  async (server: http.Server): Promise<Server> =>
  
     socketServer.on('connection', async (socket) => {
         console.log("user is added to room " + socket.data.user)
-        await socket.join(socket.data.user)
+        //await socket.join(socket.data.user)
         await socket.join("all");
         commonHandlers(socketServer,socket)
         postHandlers(socketServer,socket)
