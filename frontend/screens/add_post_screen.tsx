@@ -5,6 +5,7 @@ import COLORS from "../constants/colors";
 import ActivityIndicator from "./component/custom_activity_indicator";
 import CustomImagePicker from './component/custom_image_picker'
 import { UserCredentials } from "../model/user_model";
+import UserModel from "../model/user_model";
 
 const Add_Post: FC<{ navigation: any; route: any }> = ({
     navigation,
@@ -16,6 +17,14 @@ const Add_Post: FC<{ navigation: any; route: any }> = ({
     const [text,setText] = useState<String>("")
     const [imageUri,setImageUri] = useState<String>("")
     const [userInfo,setUserInfo] = useState<UserCredentials>({_id:"",access_token:"",refresh_token:""});
+    const [userEmail,setUserEmail] = useState<String>("")
+    const getUser =async (id:String) => {
+
+      const user =  await UserModel.getUserById(route.params._id)   
+      console.log("getUser "+user.email);
+      setUserEmail(user.email)
+     }
+    
     React.useEffect(()=>{
     const usrc:UserCredentials = {
       _id:route.params._id,
@@ -24,18 +33,22 @@ const Add_Post: FC<{ navigation: any; route: any }> = ({
     }
     console.log(usrc);
     setUserInfo(usrc)
+    getUser(route.params._id)
   },[route.params?._id])
 
 
     const onSave = async ()=>{
       setIsLoading(true)
-    
-      if(id!="" && name !=""){
+      console.log("Saving post "+userEmail+" "+text);
+      
+      if(userEmail!="" && name !=""){
+
         const p:Post = {
-          id:id,
+          id:userEmail,
           text:text,
           imageUrl:'',
         }
+
         if(imageUri != ""){
           console.log("saving image")
           const url = await PostModel.uploadImage(imageUri,userInfo)
@@ -47,12 +60,16 @@ const Add_Post: FC<{ navigation: any; route: any }> = ({
         await PostModel.addPost(p,userInfo)
         setIsLoading(false)
         navigation.goBack()
-      }
+      }else setIsLoading(false)
     }
+
+
     const onImageSelected = (uri:String)=>{
       console.log("onImageSelected " + uri)
       setImageUri(uri)
   }
+
+
     return (
       <ScrollView>
       <View style={styles.container}>
