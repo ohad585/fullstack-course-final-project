@@ -13,8 +13,8 @@ const Edit_User: FC<{ navigation: any; route:any }> = ({navigation, route}) => {
     const [Password,setPassword] = useState<String>("")
     const [imageUri,setImageUri] = useState<String>("")
     const [userInfo,setUserInfo] = useState<UserCredentials>({_id:"",access_token:"",refresh_token:""});
-
-
+    const [accessToken,setAccessToken] = useState<String>("")
+    const [refreshToken,setRefreshToken] = useState<String>("")
     const getUser=async (userID:String)=>{
       return UserModel.getUserById(userID)
   }
@@ -25,10 +25,15 @@ const Edit_User: FC<{ navigation: any; route:any }> = ({navigation, route}) => {
         refresh_token:route.params.refreshToken
       }
       console.log(usrc);
-      setUserInfo(usrc)
-      getUser(route.params._id)
-    },[route.params?._id])
-
+      if(route.params?.email){
+        setUserName(route.params.email)
+        setUserNameOld(route.params.email)
+        setPassword(route.params.password)
+        setImageUri(route.params.imageUrl)
+        setAccessToken(route.params.accessToken)
+        setRefreshToken(route.params.refreshToken)
+      }
+    },route.params?.email)
 
     const onSave = async ()=>{
       setIsLoading(true)
@@ -40,7 +45,7 @@ const Edit_User: FC<{ navigation: any; route:any }> = ({navigation, route}) => {
         }
         if(imageUri != ""){
           console.log("saving image")
-          const url = await UserModel.uploadImage(imageUri,userInfo.access_token)
+          const url = await UserModel.uploadImage(imageUri,accessToken)
           user.imageUri = url
           console.log("saving image : " + url) 
       }

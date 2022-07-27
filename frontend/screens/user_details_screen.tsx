@@ -17,10 +17,11 @@ const UserDetails: FC<{ navigation: any; route: any }> = ({
     const [userInfo,setUserInfo] = useState<UserCredentials>({_id:"",access_token:"",refresh_token:""});
 
     const getUser =async (id:String) => {
-      const user =  await UserModel.getUserById(route.params._id) 
+      const user =  await UserModel.getUserById(route.params._id)   
+      console.log("getUser "+user.email);
+      setUserImgUri(user.imageUri)
       setUserMail(user.email)
       setUserPassword(user.password)
-      setUserImgUri(user.imageUri)
      }
 
     React.useEffect(()=>{
@@ -31,9 +32,18 @@ const UserDetails: FC<{ navigation: any; route: any }> = ({
       }
       console.log(usrc);
       setUserInfo(usrc)
-      getUser(usrc._id)
+      getUser(route.params._id)
     },[route.params?._id])
     
+    const navigateToEditDetails = ()=>{
+      navigation.navigate("Edit User Details",{
+        email:userMail,
+        password:userPassword,
+        imgUri:userImgUri,
+        accessToken:route.params.accessToken,
+        refreshToken:route.params.refreshToken
+      })
+    }
 
 
     return (
@@ -46,7 +56,18 @@ const UserDetails: FC<{ navigation: any; route: any }> = ({
           <Text>Edit My Details</Text>
           </TouchableHighlight>
         <TouchableHighlight onPress={()=>navigation.navigate("User Posts",{user:userInfo})}>
-        <Text>My Posts</Text>          
+        <Text>My Posts</Text>     
+        </TouchableHighlight>     
+       {/*  <NavigationContainer>
+            <UserDetailsStack.Navigator screenOptions={{ title: 'Apply to all' }}>
+            <UserDetailsStack.Screen name="Edit User Screen" component={EditUserDetailsScreen} />
+            </UserDetailsStack.Navigator>
+            </NavigationContainer> */}
+        <Text>user mail: {userMail}</Text>
+        <Text>user Password: {userPassword}</Text>
+        <Text>user Img: {userImgUri}</Text>
+        <TouchableHighlight onPress={()=>navigateToEditDetails()}>
+          <Text>edit</Text>
         </TouchableHighlight>
       </View>
     );

@@ -28,7 +28,7 @@ const PostListRow: FC<{ post: Post; onItemClick: (id: String) => void }> = ({
       <View style={styles.list_row_container}>
         {post.imageUrl != "" && (
           <Image
-            source={{ uri: post.imageUrl.toString() }}
+            source={{ uri: post.imageUrl?.toString() }}
             style={styles.list_row_image}
           ></Image>
         )}
@@ -85,49 +85,44 @@ const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
 
   const [data, setData] = useState<Array<Post>>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [userInfo, setUserInfo] = useState<UserCredentials>({
-    _id: "",
-    access_token: "",
-    refresh_token: "",
-  });
+  const [userId,setUserId] = useState<String>("")
   const [accessToken, setAccessToken] = useState<String>("");
+  const [refreshToken, setRefreshToken] = useState<String>("");
+
   const openAddPost = () => {
     navigation.navigate("Add Post", {
-      _id: userInfo._id,
-      accessToken: userInfo.access_token,
-      refreshToken: userInfo.refresh_token,
+      _id: route.params._id,
+      accessToken: route.params.accessToken,
+      refreshToken: route.params.refreshToken
     });
   };
 
   const openUserDetails = () => {
-    console.log("OpenUserDetails " +userInfo._id + " " + userInfo.access_token);
+    console.log("OpenUserDetails " +route.params._id + " " + route.params.accessToken);
     
     navigation.navigate("User Details", {
-      _id: userInfo._id,
-      accessToken: userInfo.access_token,
-      refreshToken: userInfo.refresh_token,
+      _id: route.params._id,
+      accessToken: route.params.accessToken,
+      refreshToken: route.params.refreshToken
     });
   };
 
   const getUser =async (id:String) => {
 
    const user =  await UserModel.getUserById(route.params._id)   
+   console.log("getUser "+user.email);
    
   }
 
 
   React.useEffect(() => {
-    const usrc: UserCredentials = {
-      _id: route.params._id,
-      access_token: route.params.accessToken,
-      refresh_token: route.params.refreshToken,
-    };
-    console.log("USERC " + usrc._id);
-    setUserInfo(usrc);
+    
+    setUserId(route.params._id)
     setAccessToken(route.params.accessToken);
-    //console.log("USERINFO " + userInfo._id);
-    //console.log("AccesToken " + accessToken);
-    getUser(usrc._id)
+    setRefreshToken(route.params.refreshToken)
+    console.log("Got user "+route.params._id+" "+route.params.accessToken);
+    
+    getUser(userId)
     navigation.setOptions({
       headerRight: () => {
         return (
