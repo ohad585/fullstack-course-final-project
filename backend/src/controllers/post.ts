@@ -59,7 +59,7 @@ export const createNewPost = async (req: Request | CtrlReq, res: Response | Ctrl
   console.log(req.body);
   const sender = req.body.sender;
   const post = new Post({
-    message: req.body.message,
+    message: req.body.text,
     sender: sender,
   });
 

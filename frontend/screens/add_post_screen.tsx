@@ -41,7 +41,7 @@ const Add_Post: FC<{ navigation: any; route: any }> = ({
       setIsLoading(true)
       console.log("Saving post "+userEmail+" "+text);
       
-      if(userEmail!="" && name !=""){
+      if(userEmail!="" && text !=""){
 
         const p:Post = {
           id:userEmail,
@@ -81,8 +81,8 @@ const Add_Post: FC<{ navigation: any; route: any }> = ({
               placeholder="ID"
               keyboardType="default"></TextInput>
           <TextInput style={styles.textInput}
-              onChangeText={setName}
-              placeholder="Name"
+              onChangeText={setText}
+              placeholder="Text"
               keyboardType="default"></TextInput>
           <TouchableHighlight
               onPress={onSave}

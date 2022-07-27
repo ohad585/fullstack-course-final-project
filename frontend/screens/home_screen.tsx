@@ -28,7 +28,7 @@ const PostListRow: FC<{ post: Post; onItemClick: (id: String) => void }> = ({
       <View style={styles.list_row_container}>
         {post.imageUrl != "" && (
           <Image
-            source={{ uri: post.imageUrl.toString() }}
+            source={{ uri: post.imageUrl?.toString() }}
             style={styles.list_row_image}
           ></Image>
         )}
