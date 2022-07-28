@@ -1,5 +1,5 @@
 import React, { FC, useState,useEffect } from "react";
-import { View, Text ,StyleSheet ,Image, TextInput, TouchableHighlight, ScrollView,FlatList} from "react-native";
+import { View, Text ,StyleSheet ,Image, TextInput, TouchableHighlight, ScrollView,FlatList,SafeAreaView } from "react-native";
 import COLORS from "../constants/colors";
 import {io} from "socket.io-client"
 
@@ -21,12 +21,12 @@ const SentMessage: FC<{payload:Payload}> = ({ payload }) => {
 
 
 
-  const MyMessage: FC<{Message:String}> = ({ Message }) => {
+/*   const MyMessage: FC<{Message:String}> = ({ Message }) => {
     return (
       <Text style={styles.my_message}>{Message}</Text>
     );
   };
-
+ */
 
   const TextBox: FC<{}> = ({}) => {
 
@@ -42,12 +42,16 @@ const SentMessage: FC<{payload:Payload}> = ({ payload }) => {
 
     const [text,setText] = useState<String>("Send message")
     return (
+      <SafeAreaView >
+
         <View style={styles.row }>
       <TextInput style={styles.TextBox} onChangeText={setText} placeholder={"Send text"} keyboardType="default"></TextInput>
     <TouchableHighlight onPress={()=> sendMessage(text.toString())}>
     <Image  style={styles.img } source={require("../assets/sentIMG.png")} ></Image>
     </TouchableHighlight>
     </View>
+    </SafeAreaView >
+
     );
   };
 
@@ -84,64 +88,98 @@ const Chat: FC<{ }> = ({ }) => {
 
  
     return (
+    <ScrollView>
+
     <View>
-        {/* <SentMessage Message={"sent message"}></SentMessage>
-        <MyMessage Message={"my message"}></MyMessage> */}
+
+    {/*   <View > 
+       <Text style={styles.my_message}>my </Text>
+       <Text style={styles.sent_message}>they </Text>
+       <Text style={styles.my_message}>my </Text>
+       <Text style={styles.sent_message}>they </Text>
+       <Text style={styles.my_message}>my </Text>
+       <Text style={styles.sent_message}>they </Text>
+       <Text style={styles.my_message}>my </Text>
+       <Text style={styles.sent_message}>they </Text>
+       <Text style={styles.my_message}>my </Text>
+       <Text style={styles.sent_message}>they </Text>
+       <Text style={styles.my_message}>my </Text>
+       <Text style={styles.sent_message}>they </Text>
+       <Text style={styles.my_message}>my </Text>
+       <Text style={styles.sent_message}>they </Text>
+       </View >
+
+
+ */}
+
         <FlatList
         data={data}
         keyExtractor={(item) => item.message.toString()}
         renderItem={({ item }) => (
           <SentMessage payload={item} />
         )}
-      ></FlatList>
-        <TextBox></TextBox>
+        
+      ></FlatList> 
+     
+        <TextBox ></TextBox>
     </View>
+    </ScrollView>
+
     )
     
 }
 
 
 const styles = StyleSheet.create({
-    sent_message: {
-        marginBottom:15,
-        marginTop:15,
 
-        textAlign: 'right',
-        backgroundColor : "lightgrey",
-        fontSize: 30,
-        padding: 20,
+    sent_message: {
+      alignSelf: 'flex-end',
+      borderWidth:3, 
+       borderRadius: 10,
+       width: 'auto',
+      backgroundColor : "lightgrey",
+      fontSize: 30,
+      padding: 20,
+      margin:15,
+     
 
     },
     my_message: {
-        marginTop:15,
-        marginBottom:15,
-        flexWrap:"wrap",
-        textAlign: 'left',
-        backgroundColor : "powderblue",
+      alignSelf: 'flex-start',
+      borderWidth: 3, 
+       borderRadius: 10,
+       width: 'auto',
+       backgroundColor : "powderblue",
         fontSize: 30,
         padding: 20,
+        margin:15,
+
 
     },
     TextBox:{
-        fontSize: 30,
-        height:60,
-        margin:15,
+      fontSize: 20,
+      margin:15,
         borderWidth:3,
         borderColor:"grey",
         color: 'black',
-        flex:1
+        height: 80,
+        width:" 60%" ,
+
+
       },
       img:{
         alignSelf: 'flex-end',  
         margin:15,
-        height: 60,
-        width: 60 
+        height: 80,
+        width:100 ,
       },
       row: {
-        flex: 1,
+        position: "absolute", 
+        bottom:0,
         flexDirection: "row",
-        textAlignVertical: 'bottom',
-        
+        //flexWrap: "wrap",
+
+    
       },
 });
 export default Chat
