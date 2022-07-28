@@ -1,6 +1,7 @@
 import express from "express";
 const app = express();
 import dotenv from "dotenv";
+import cors from "cors"
 dotenv.config();
 
 console.log("seerver is starting..");

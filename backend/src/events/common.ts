@@ -7,12 +7,15 @@ type ImsMessage = {
 }
 
 export = (io:Server, socket:Socket) => {
+    
     const echoHandler = (payload:string) => {
+        console.log("Echo handler "+payload);
+
         socket.emit("common:echo", payload)
     }
  
     const imsSendMessageHandler = (payload:ImsMessage) => {
-        console.log("imsSendMessageHandler " + payload.from + " " + payload.to)
+        console.log("imsSendMessageHandler " + payload.from + " " + payload.to+" "+payload.message)
         const to = payload.to
         io.to(to).emit("ims:reciev_message",payload) 
     }
