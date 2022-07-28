@@ -18,6 +18,7 @@ import PostDetailsScreen from "./screens/post_screen"
 import EditUserDetailsScreen from "./screens/edit_user_details"
 import EditPostScreen from "./screens/edit_post_screen"
 import ChatScreen from "./screens/chat_screen"
+import io from "socket.io-client"
 
 
 
@@ -57,6 +58,8 @@ const HomeStackScreen: FC<{ navigation: any; route: any }> = ({ navigation, rout
 
 
 const App: FC = () => {
+  
+
   return (
     <NavigationContainer>
       

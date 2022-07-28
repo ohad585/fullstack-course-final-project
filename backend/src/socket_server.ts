@@ -30,23 +30,23 @@ export const initSocketServer =  async (server: http.Server): Promise<Server> =>
     await subClient.connect() 
     socketServer.adapter(createAdapter(pubClient, subClient));
 
-    socketServer.use(async (socket, next) => {
-        console.log("socket_server on Use");
-        socket.data.user="123"
+    // socketServer.use(async (socket, next) => {
+    //     console.log("socket_server on Use");
+   
         
-        next()
-        let token = socket.handshake.auth.token;
-        if(token == null) return next(new Error('Authentication error'))
-        token = token.split(' ')[1]
-        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-            if (err){
-                next(new Error('Authentication error'));
-            } else{
-                socket.data.user = user._id
-                next()
-            }
-        })
-    });
+    //     next()
+    //     let token = socket.handshake.auth.token;
+    //     if(token == null) return next(new Error('Authentication error'))
+    //     token = token.split(' ')[1]
+    //     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    //         if (err){
+    //             next(new Error('Authentication error'));
+    //         } else{
+    //             socket.data.user = user._id
+    //             next()
+    //         }
+    //     })
+    // });
  
     socketServer.on('connection', async (socket) => {
         console.log("user is added to room " + socket.data.user)
