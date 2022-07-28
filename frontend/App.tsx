@@ -18,16 +18,14 @@ import PostDetailsScreen from "./screens/post_screen"
 import EditUserDetailsScreen from "./screens/edit_user_details"
 import EditPostScreen from "./screens/edit_post_screen"
 import ChatScreen from "./screens/chat_screen"
+import io from "socket.io-client";
 
-
+const socket = io("http://localhost:3001");
 
 
 
 const Tab = createBottomTabNavigator();
-
 const HomeStack = createNativeStackNavigator();
-
-//component of add post btn
 
 const HomeStackScreen: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
   return (
@@ -57,6 +55,16 @@ const HomeStackScreen: FC<{ navigation: any; route: any }> = ({ navigation, rout
 
 
 const App: FC = () => {
+  const [username, setUsername] = useState("");
+  const [room, setRoom] = useState("");
+  const [showChat, setShowChat] = useState(false);
+
+  const joinRoom = () => {
+    if (username !== "" && room !== "") {
+      socket.emit("join_room", room);
+      setShowChat(true);
+    }
+  };
   return (
     <NavigationContainer>
       
