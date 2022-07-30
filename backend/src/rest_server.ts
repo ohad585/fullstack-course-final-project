@@ -36,6 +36,9 @@ app.use("/file",file_route)
 app.use("/uploads/post",express.static('uploads'))
 app.use("/uploads/profile",express.static('uploads'))
 
+import message_route from "./routes/message_routes"
+app.use("/msg",message_route)
+
 // import swaggerUI from "swagger-ui-express";
 // import swaggerJsDoc from "swagger-jsdoc";
 
