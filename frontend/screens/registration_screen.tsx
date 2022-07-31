@@ -4,6 +4,7 @@ import UserModel,{User, UserCredentials} from "../model/user_model"
 import COLORS from "../constants/colors";
 import ActivityIndicator from "./component/custom_activity_indicator";
 import CustomImagePicker from "./component/custom_image_picker";
+import LocalCache from "../model/local_cache"
 
 const Add_User: FC<{ navigation: any; route: any }> = ({
     navigation,
@@ -34,6 +35,7 @@ const Add_User: FC<{ navigation: any; route: any }> = ({
         if(usrC==null){
           alert("Somthing went wrong")
         }else{
+          LocalCache.saveUserEmail(UserName.toString())
           navigation.navigate("Home",{_id:usrC._id,accessToken:usrC.access_token,refreshToken:usrC.refresh_token})
         }
       }

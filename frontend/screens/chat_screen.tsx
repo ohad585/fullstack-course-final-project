@@ -2,6 +2,7 @@ import React, { FC, useState,useEffect } from "react";
 import { View, Text ,StyleSheet ,Image, TextInput, TouchableHighlight, ScrollView,FlatList,SafeAreaView } from "react-native";
 import COLORS from "../constants/colors";
 import {io} from "socket.io-client"
+//import LocalCache from "../model/local_cache";
 
 const socket = io('http://192.168.0.100:3000')
 
@@ -55,11 +56,17 @@ const SentMessage: FC<{payload:Payload}> = ({ payload }) => {
     );
   };
 
+  // const getUserEmail =async () => {
+  //   const email = await LocalCache.getUserEmail()
+  //   console.log("EMAIL "+ email?.toString());
+    
+  // }
+
 const Chat: FC<{ }> = ({ }) => {
 
   const [data,setData] = useState<Array<Payload>>([]);
 
-
+  //getUserEmail()
   console.log("Socket starting");
   socket.on("connect_error", (err) => {
     //socket.auth.token = "abcd";
@@ -73,7 +80,7 @@ const Chat: FC<{ }> = ({ }) => {
   socket.on("disconnect", () => {
     console.log(socket.id); // undefined
   });
-
+  
   useEffect(() => {
     socket.on("ims:reciev_message", (data) => {
       console.log("Recived msg from socket "+data.from+" "+data.message);

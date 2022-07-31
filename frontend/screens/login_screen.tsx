@@ -2,8 +2,7 @@ import React ,{ FC, useState } from "react";
 import { View, Text ,StyleSheet ,Image, TextInput, TouchableHighlight, ScrollView,Button} from "react-native";
 import UserModle,{User} from "../model/user_model"
 import COLORS from "../constants/colors";
-// import FacebookLogin from "./component/custom_facebook_login_button"
-// import {ReactFacebookLoginInfo} from "react-facebook-login"
+import LocalCache from "../model/local_cache";
 import GoogleLoginBtn from "./component/custom_google_login_button";
 
 
@@ -29,7 +28,10 @@ const Login: FC<{ navigation: any; route: any }> = ({
       const usrC = await UserModle.loginUser(user)
       if(usrC==null){
         alert("Login failed")
-      }else navigation.navigate("Home")
+      }else {
+        LocalCache.saveUserEmail(UserName.toString())
+        navigation.navigate("Home")
+      }
     }
 
     const googleLogin =async (accessToken:String)=>{
@@ -47,6 +49,7 @@ const Login: FC<{ navigation: any; route: any }> = ({
       if(usrC==null){
         alert("Google Login failed")
       }else {
+        LocalCache.saveUserEmail(data.email.toString())
         navigation.navigate("Home",{_id:usrC._id,accessToken:usrC.access_token,refreshToken:usrC.refresh_token})
       }
     }
