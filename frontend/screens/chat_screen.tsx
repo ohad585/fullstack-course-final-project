@@ -2,21 +2,18 @@ import React, { FC, useState,useEffect } from "react";
 import { View, Text ,StyleSheet ,Image, TextInput, TouchableHighlight, ScrollView,FlatList,SafeAreaView } from "react-native";
 import COLORS from "../constants/colors";
 import {io} from "socket.io-client"
-//import LocalCache from "../model/local_cache";
+import LocalCache from "../model/local_cache";
+import ImsModel, { Message } from "../model/ims_model";
 
 const socket = io('http://192.168.0.100:3000')
+var userEmail = ''
 
-type Payload = {
-  to:String,
-  from:String,
-  message:String
-}
 
-const SentMessage: FC<{payload:Payload}> = ({ payload }) => {
+const SentMessage: FC<{payload:Message}> = ({ payload }) => {
   let View
-  if(payload.from=='ohad'){
-    View = <Text style={styles.my_message}>{payload.message}</Text>
-  }else View = <Text style={styles.sent_message}>{payload.message}</Text>
+  if(payload.sender==userEmail){
+    View = <Text style={styles.my_message}>{payload.text}</Text>
+  }else View = <Text style={styles.sent_message}>{payload.text}</Text>
     return View;
   };
 
@@ -36,7 +33,7 @@ const SentMessage: FC<{payload:Payload}> = ({ payload }) => {
       setText("")
       socket.emit("ims:send_message",{
         to: "all",
-        from: "ohad",
+        from: userEmail,
         message: message
     })
     }
@@ -56,17 +53,32 @@ const SentMessage: FC<{payload:Payload}> = ({ payload }) => {
     );
   };
 
-  // const getUserEmail =async () => {
-  //   const email = await LocalCache.getUserEmail()
-  //   console.log("EMAIL "+ email?.toString());
-    
-  // }
+  const getUserEmail =async () => {
+    const email = await LocalCache.getUserEmail()
+    console.log("EMAIL "+ email?.toString());
 
-const Chat: FC<{ }> = ({ }) => {
+    if(email!=null &&email !=undefined){
+      userEmail = email
+    }
+  }
 
-  const [data,setData] = useState<Array<Payload>>([]);
+  
 
-  //getUserEmail()
+const Chat: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
+
+  const [data,setData] = useState<Array<Message>>([]);
+
+  const getImsData =async () => {
+    const imsData = await ImsModel.getAllMessages()
+    setData(imsData)
+  }
+
+  useEffect(() => {
+    navigation.addListener("focus", () => {
+      getImsData();
+      getUserEmail()
+    });
+  }, [navigation]);
   console.log("Socket starting");
   socket.on("connect_error", (err) => {
     //socket.auth.token = "abcd";
@@ -84,12 +96,11 @@ const Chat: FC<{ }> = ({ }) => {
   useEffect(() => {
     socket.on("ims:reciev_message", (data) => {
       console.log("Recived msg from socket "+data.from+" "+data.message);
-      const payload:Payload = {
-        to:data.to,
-        from:data.from,
-        message:data.message
+      const msg:Message = {
+        sender:data.to,
+        text:data.message
       }
-      setData((data) => [...data, payload]);
+      setData((data) => [...data, msg]);
     });
   }, [socket]);
 
@@ -121,7 +132,7 @@ const Chat: FC<{ }> = ({ }) => {
 
         <FlatList
         data={data}
-        keyExtractor={(item) => item.message.toString()}
+        keyExtractor={(item) => item.text.toString()}
         renderItem={({ item }) => (
           <SentMessage payload={item} />
         )}
