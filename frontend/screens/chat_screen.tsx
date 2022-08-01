@@ -40,15 +40,12 @@ const SentMessage: FC<{payload:Message}> = ({ payload }) => {
 
     const [text,setText] = useState<String>("Send message")
     return (
-      <SafeAreaView >
-
         <View style={styles.row }>
       <TextInput style={styles.TextBox} onChangeText={setText} placeholder={"Send text"} keyboardType="default"></TextInput>
     <TouchableHighlight onPress={()=> sendMessage(text.toString())}>
     <Image  style={styles.img } source={require("../assets/sentIMG.png")} ></Image>
     </TouchableHighlight>
     </View>
-    </SafeAreaView >
 
     );
   };
@@ -106,31 +103,32 @@ const Chat: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
 
  
     return (
-    <ScrollView>
+      <View  style={styles.container}>
 
-    <View>
-
-    {/*   <View > 
-       <Text style={styles.my_message}>my </Text>
-       <Text style={styles.sent_message}>they </Text>
-       <Text style={styles.my_message}>my </Text>
-       <Text style={styles.sent_message}>they </Text>
-       <Text style={styles.my_message}>my </Text>
-       <Text style={styles.sent_message}>they </Text>
-       <Text style={styles.my_message}>my </Text>
-       <Text style={styles.sent_message}>they </Text>
-       <Text style={styles.my_message}>my </Text>
-       <Text style={styles.sent_message}>they </Text>
-       <Text style={styles.my_message}>my </Text>
-       <Text style={styles.sent_message}>they </Text>
-       <Text style={styles.my_message}>my </Text>
-       <Text style={styles.sent_message}>they </Text>
-       </View >
+    <ScrollView  style={styles.body}>
 
 
- */}
+    {/*  <View  > 
+       <Text style={styles.my_message}>my </Text>
+       <Text style={styles.sent_message}>they </Text>
+       <Text style={styles.my_message}>my </Text>
+       <Text style={styles.sent_message}>they </Text>
+       <Text style={styles.my_message}>my </Text>
+       <Text style={styles.sent_message}>they </Text>
+       <Text style={styles.my_message}>my </Text>
+       <Text style={styles.sent_message}>they </Text>
+       <Text style={styles.my_message}>my </Text>
+       <Text style={styles.sent_message}>they </Text>
+       <Text style={styles.my_message}>my </Text>
+       <Text style={styles.sent_message}>they </Text>
+       <Text style={styles.my_message}>my </Text>
+       <Text style={styles.sent_message}>they </Text>
+       </View > */}
 
-        <FlatList
+
+ 
+
+    <FlatList
         data={data}
         keyExtractor={(item) => item.text.toString()}
         renderItem={({ item }) => (
@@ -138,10 +136,13 @@ const Chat: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
         )}
         
       ></FlatList> 
-     
+    
+      </ScrollView>
+
+      <View  style={styles.footer}>
         <TextBox ></TextBox>
+        </View>
     </View>
-    </ScrollView>
 
     )
     
@@ -176,11 +177,11 @@ const styles = StyleSheet.create({
     },
     TextBox:{
       fontSize: 20,
-      margin:15,
+      margin:20,
         borderWidth:3,
         borderColor:"grey",
         color: 'black',
-        height: 80,
+        height: 40,
         width:" 60%" ,
 
 
@@ -188,16 +189,34 @@ const styles = StyleSheet.create({
       img:{
         alignSelf: 'flex-end',  
         margin:15,
-        height: 80,
+        height: 60,
         width:100 ,
       },
       row: {
-        position: "absolute", 
-        bottom:0,
         flexDirection: "row",
-        //flexWrap: "wrap",
-
-    
       },
+      container:{
+        flex: 1,
+        flexDirection: "column",
+
+      },
+      body:{
+        height: "auto",
+        //backgroundColor:"red",
+        bottom:80,
+
+
+
+
+
+      },
+      footer:{
+        position: 'absolute', //Here is the trick
+       bottom:0,
+       //backgroundColor:"yellow"
+
+        
+      
+      }
 });
 export default Chat
