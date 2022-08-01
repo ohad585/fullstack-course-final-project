@@ -10,11 +10,22 @@ var userEmail = ''
 
 
 const SentMessage: FC<{payload:Message}> = ({ payload }) => {
-  let View
+  let view
   if(payload.sender==userEmail){
-    View = <Text style={styles.my_message}>{payload.text}</Text>
-  }else View = <Text style={styles.sent_message}>{payload.text}</Text>
-    return View;
+    view =
+       <View> 
+    <Text style={styles.my_message_name}>{userEmail}:</Text>
+    <Text style={styles.my_message}>{userEmail}:{payload.text}</Text>
+    </View>
+    }
+    else{
+    view =
+    <View> 
+    <Text style={styles.sent_message_name}>{userEmail}:</Text>
+    <Text style={styles.sent_message}>{payload.text}</Text>
+    </View>
+ }
+    return view;
   };
 
 
@@ -50,18 +61,21 @@ const SentMessage: FC<{payload:Message}> = ({ payload }) => {
     );
   };
 
-  const getUserEmail =async () => {
+  
+   const getUserEmail =async () => {
     const email = await LocalCache.getUserEmail()
     console.log("EMAIL "+ email?.toString());
 
     if(email!=null &&email !=undefined){
       userEmail = email
     }
-  }
+  } 
+  
 
   
 
 const Chat: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
+
 
   const [data,setData] = useState<Array<Message>>([]);
 
@@ -108,8 +122,12 @@ const Chat: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
     <ScrollView  style={styles.body}>
 
 
-    {/*  <View  > 
+      <View  > 
+      <Text style={styles.my_message_name}>liro </Text>
+
        <Text style={styles.my_message}>my </Text>
+       <Text style={styles.sent_message_name}>kkk </Text>
+
        <Text style={styles.sent_message}>they </Text>
        <Text style={styles.my_message}>my </Text>
        <Text style={styles.sent_message}>they </Text>
@@ -123,19 +141,20 @@ const Chat: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
        <Text style={styles.sent_message}>they </Text>
        <Text style={styles.my_message}>my </Text>
        <Text style={styles.sent_message}>they </Text>
-       </View > */}
+       </View > 
 
 
  
 
-    <FlatList
+   {/*  <FlatList
         data={data}
         keyExtractor={(item) => item.text.toString()}
         renderItem={({ item }) => (
+          
           <SentMessage payload={item} />
         )}
         
-      ></FlatList> 
+      ></FlatList>  */}
     
       </ScrollView>
 
@@ -160,9 +179,13 @@ const styles = StyleSheet.create({
       fontSize: 30,
       padding: 20,
       margin:15,
-     
+    },
+    sent_message_name:{
+      textAlign: "right",
+      fontSize: 30,
 
     },
+
     my_message: {
       alignSelf: 'flex-start',
       borderWidth: 3, 
@@ -172,9 +195,13 @@ const styles = StyleSheet.create({
         fontSize: 30,
         padding: 20,
         margin:15,
-
+    },
+    my_message_name:{
+      alignSelf: 'flex-start',
+      fontSize: 30,
 
     },
+
     TextBox:{
       fontSize: 20,
       margin:20,
