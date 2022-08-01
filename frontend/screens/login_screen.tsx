@@ -30,7 +30,7 @@ const Login: FC<{ navigation: any; route: any }> = ({
         alert("Login failed")
       }else {
         LocalCache.saveUserEmail(UserName.toString())
-        navigation.navigate("Home")
+        navigation.navigate("Home",{_id:usrC._id,accessToken:usrC.access_token,refreshToken:usrC.refresh_token})
       }
     }
 

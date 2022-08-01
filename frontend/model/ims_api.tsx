@@ -4,13 +4,16 @@ import { Message } from "./ims_model";
 const getAllMessages = async () => {
     const res = await apiClient.get("/msg/");
     let messages = Array<Message>()
+    console.log("Getting all messages");
     
     if(res.data){
       res.data.forEach((element) => {
         const msg:Message ={
           sender:element.sender,
-          text:element.text
+          text:element.message
         }
+        console.log("added msg "+msg.sender+" "+msg.text);
+        
         messages.push(msg)
       });
     }else {

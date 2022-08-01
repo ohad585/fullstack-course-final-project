@@ -74,15 +74,6 @@ const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
     );
   };
 
-
-
-
-
-
-
-
-
-
   const [data, setData] = useState<Array<Post>>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userId,setUserId] = useState<String>("")

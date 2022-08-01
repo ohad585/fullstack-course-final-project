@@ -11,17 +11,19 @@ var userEmail = ''
 
 const SentMessage: FC<{payload:Message}> = ({ payload }) => {
   let view
+  console.log("SentMessage from "+payload.sender +" me: "+ userEmail);
+  
   if(payload.sender==userEmail){
     view =
        <View> 
-    <Text style={styles.my_message_name}>{userEmail}:</Text>
+    <Text style={styles.my_message_name}>{payload.sender}:</Text>
     <Text style={styles.my_message}>{payload.text}</Text>
     </View>
     }
     else{
     view =
     <View> 
-    <Text style={styles.sent_message_name}>{userEmail}:</Text>
+    <Text style={styles.sent_message_name}>{payload.sender}:</Text>
     <Text style={styles.sent_message}>{payload.text}</Text>
     </View>
  }
@@ -41,6 +43,7 @@ const SentMessage: FC<{payload:Message}> = ({ payload }) => {
 
     const sendMessage=(message:String)=>{
       console.log(message);
+      ImsModel.saveMessage({sender:userEmail,text:message})
       setText("")
       socket.emit("ims:send_message",{
         to: "all",
@@ -49,7 +52,7 @@ const SentMessage: FC<{payload:Message}> = ({ payload }) => {
     })
     }
 
-    const [text,setText] = useState<String>("Send message")
+    const [text,setText] = useState<String>("")
     return (
         <View style={styles.row }>
       <TextInput style={styles.TextBox} onChangeText={setText} placeholder={"Send text"} keyboardType="default"></TextInput>
@@ -108,7 +111,7 @@ const Chat: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
     socket.on("ims:reciev_message", (data) => {
       console.log("Recived msg from socket "+data.from+" "+data.message);
       const msg:Message = {
-        sender:data.to,
+        sender:data.from,
         text:data.message
       }
       setData((data) => [...data, msg]);
