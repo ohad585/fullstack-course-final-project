@@ -122,7 +122,7 @@ const Chat: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
     <ScrollView  style={styles.body}>
 
 
-      <View  > 
+   {/*    <View  > 
       <Text style={styles.my_message_name}>liro </Text>
 
        <Text style={styles.my_message}>my </Text>
@@ -141,12 +141,12 @@ const Chat: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
        <Text style={styles.sent_message}>they </Text>
        <Text style={styles.my_message}>my </Text>
        <Text style={styles.sent_message}>they </Text>
-       </View > 
+       </View >  */}
 
 
  
 
-   {/*  <FlatList
+     <FlatList
         data={data}
         keyExtractor={(item) => item.text.toString()}
         renderItem={({ item }) => (
@@ -154,7 +154,7 @@ const Chat: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
           <SentMessage payload={item} />
         )}
         
-      ></FlatList>  */}
+      ></FlatList> 
     
       </ScrollView>
 
