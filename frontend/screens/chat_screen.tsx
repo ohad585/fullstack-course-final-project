@@ -120,12 +120,15 @@ const Chat: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
 
  
     return (
+   
       <View  style={styles.container}>
-
+   <View style={styles.top}>
+        
+        </View>
     <ScrollView  style={styles.body}>
 
 
-   {/*    <View  > 
+ {/*  <View  > 
       <Text style={styles.my_message_name}>liro </Text>
 
        <Text style={styles.my_message}>my </Text>
@@ -144,12 +147,12 @@ const Chat: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
        <Text style={styles.sent_message}>they </Text>
        <Text style={styles.my_message}>my </Text>
        <Text style={styles.sent_message}>they </Text>
-       </View >  */}
+       </View >  
 
-
+ */}
  
 
-     <FlatList
+   <FlatList
         data={data}
         keyExtractor={(item) => item.text.toString()}
         renderItem={({ item }) => (
@@ -157,8 +160,7 @@ const Chat: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
           <SentMessage payload={item} />
         )}
         
-      ></FlatList> 
-    
+      ></FlatList>  
       </ScrollView>
 
       <View  style={styles.footer}>
@@ -172,7 +174,9 @@ const Chat: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
 
 
 const styles = StyleSheet.create({
-
+  top:{
+    paddingTop:100,
+  },
     sent_message: {
       alignSelf: 'flex-end',
       borderWidth:3, 
@@ -231,8 +235,7 @@ const styles = StyleSheet.create({
 
       },
       body:{
-        height: "auto",
-        //backgroundColor:"red",
+        paddingBottom:100,
         bottom:80,
 
 
