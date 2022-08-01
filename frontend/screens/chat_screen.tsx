@@ -15,7 +15,7 @@ const SentMessage: FC<{payload:Message}> = ({ payload }) => {
     view =
        <View> 
     <Text style={styles.my_message_name}>{userEmail}:</Text>
-    <Text style={styles.my_message}>{userEmail}:{payload.text}</Text>
+    <Text style={styles.my_message}>{payload.text}</Text>
     </View>
     }
     else{
