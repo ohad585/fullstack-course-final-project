@@ -45,9 +45,10 @@ const Add_Post: FC<{ navigation: any; route: any }> = ({
       if(userEmail!="" && text !=""){
 
         const p:Post = {
-          id:userEmail,
+          senderID:userEmail,
           text:text,
           imageUrl:'',
+          postID:'',
         }
 
         if(imageUri != ""){
@@ -56,7 +57,7 @@ const Add_Post: FC<{ navigation: any; route: any }> = ({
           p.imageUrl = url
           console.log("saving image : " + url) 
       }
-      console.log("Token on save "+userInfo.access_token);
+      console.log("Post url on save "+p.imageUrl);
       
         await PostModel.addPost(p,userInfo)
         setIsLoading(false)
@@ -75,7 +76,7 @@ const Add_Post: FC<{ navigation: any; route: any }> = ({
       <ScrollView>
       <View style={styles.container}>
           <View style={styles.image} >
-              <CustomImagePicker onImageSelected={onImageSelected}></CustomImagePicker>
+              <CustomImagePicker image={""} onImageSelected={onImageSelected}></CustomImagePicker>
           </View>
           <TextInput style={styles.textInput}
               onChangeText={setText}

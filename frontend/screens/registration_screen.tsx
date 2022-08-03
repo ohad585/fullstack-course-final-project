@@ -31,6 +31,7 @@ const Add_User: FC<{ navigation: any; route: any }> = ({
           user.imageUri = url
           console.log("saving image : " + url) 
       }
+        await UserModel.updateUser(user,user.email,usrC?.access_token,usrC?._id)
         setIsLoading(false)
         if(usrC==null){
           alert("Somthing went wrong")
@@ -49,7 +50,7 @@ const Add_User: FC<{ navigation: any; route: any }> = ({
       <ScrollView>
       <View style={styles.container}>
       <View style={styles.image} >
-         <CustomImagePicker onImageSelected={onImageSelected}></CustomImagePicker>
+         <CustomImagePicker image={""} onImageSelected={onImageSelected}></CustomImagePicker>
       </View>
       <TextInput style={styles.textInput} onChangeText={setUserName} placeholder="UserName" keyboardType="default"></TextInput>
       <TextInput style={styles.textInput} onChangeText={setPassword} placeholder="Password" keyboardType="default"></TextInput>

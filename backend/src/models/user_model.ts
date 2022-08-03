@@ -13,6 +13,9 @@ const userSchema = new mongoose.Schema({
   refreshToken: {
     type: String,
   },
+  imageUri:{
+    type:String
+  }
 });
 
 export = mongoose.model("User", userSchema);

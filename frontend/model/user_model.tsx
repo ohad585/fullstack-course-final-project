@@ -33,8 +33,8 @@ const uploadImage = async (imageUri: String,accessToken:String) => {
 };
 
 
-const updateUser = async (user: User, oldEmail:String) => {
-  await UserApi.updateUser(user,oldEmail)
+const updateUser = async (user: User, oldEmail:String,accessToken:String,id:String) => {
+  await UserApi.updateUser(user,oldEmail,accessToken,id)
 };
 
 const getUserById = async (id:String) => {

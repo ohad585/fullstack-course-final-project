@@ -6,24 +6,36 @@ import ActivityIndicator from "./component/custom_activity_indicator";
 import CustomImagePicker from "./component/custom_image_picker";
 import { UserCredentials } from "../model/user_model";
 
-const Edit_Post: FC<{ navigation: any; route: any, post:Post, user:UserCredentials}> = ({navigation,route,post,user }) => {
+const Edit_Post: FC<{ navigation: any; route: any,}> = ({navigation,route }) => {
     const [isLoading,setIsLoading] =useState<boolean>(false)
     const [postID,setPostID] = useState<String>("")
     const [senderID,setSenderID] = useState<String>("")
+    const [firstsenderID,setFirstSenderID] = useState<String>("")
     const [text,setText] = useState<String>("")
     const [imageUrl,setImageUrl] = useState<String>("")
     const [userInfo,setUserInfo] = useState<UserCredentials>({_id:"",access_token:"",refresh_token:""});
+    
 
+    
     React.useEffect(()=>{
       const usrc:UserCredentials = {
-        _id:route.params._id,
-        access_token:route.params.accessToken,
-        refresh_token:route.params.refreshToken
+          _id:route.params.user._id,
+          access_token:route.params.user.access_token,
+          refresh_token:route.params.user.refresh_token
       }
       console.log(usrc);
       setUserInfo(usrc)
-    },[route.params?._id])
+      setPostID(route.params.post.postID)
+      setSenderID(route.params.post.senderID)
+      setFirstSenderID(route.params.post.text)
+      setText(route.params.post.text)
+      setImageUrl(route.params.post.imageUrl)
+      console.log("Edit_post "+postID+" "+text);
+      //getUser(usrc._id)
+    },[route.params?.post])
 
+    
+    
     const onSave = async ()=>{
       setIsLoading(true)
       if(text!="" && imageUrl !="" ){
@@ -40,9 +52,9 @@ const Edit_Post: FC<{ navigation: any; route: any, post:Post, user:UserCredentia
           console.log("saving image : " + url) 
       }
       
-        await PostModel.updatePost(p)
+        await PostModel.updatePost(p,userInfo)
         setIsLoading(false)
-        navigation.goBack()
+        navigation.navigate("Home",{_id:userInfo._id,accessToken:userInfo.access_token,refreshToken:userInfo.refresh_token})
       }
     }
 
@@ -56,13 +68,9 @@ const Edit_Post: FC<{ navigation: any; route: any, post:Post, user:UserCredentia
       <ScrollView>
       <View style={styles.container}>
       <View style={styles.image} >
-      <CustomImagePicker onImageSelected={onImageSelected}></CustomImagePicker>
+      <CustomImagePicker image={imageUrl} onImageSelected={onImageSelected}></CustomImagePicker>
       </View>
-      <TextInput style={styles.textInput} onChangeText={setText} placeholder={post.text.toString()} keyboardType="default"></TextInput>
-      <TextInput style={styles.textInput} onChangeText={setImageUrl} placeholder={post.imageUrl.toString()} keyboardType="default"></TextInput>
-
-
-
+      <TextInput style={styles.textInput} onChangeText={setText} placeholder={firstsenderID.toString()} keyboardType="default"></TextInput>
       <TouchableHighlight underlayColor={COLORS.clickBackground} onPress={()=>{onSave()}} style={styles.button}>
          <Text style={styles.buttonText}>Save</Text>
        </TouchableHighlight>

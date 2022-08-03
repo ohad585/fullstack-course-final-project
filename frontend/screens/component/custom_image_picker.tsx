@@ -5,9 +5,10 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import * as ImagePicker from 'expo-image-picker';
 import colors from "../../constants/colors";
 
-const CustomImagePicker:FC<{onImageSelected:(uri:String)=>void}> = ({onImageSelected})=>{
-    const [imageUri,setImageUri] = useState("")
-
+const CustomImagePicker:FC<{onImageSelected:(uri:String)=>void,image:String}> = ({onImageSelected,image})=>{
+    const [imageUri,setImageUri] = useState(image) 
+    console.log("IMagepicker "+image);
+       
     useEffect(()=>{
         requestPermission()
     },[])
@@ -47,7 +48,7 @@ const CustomImagePicker:FC<{onImageSelected:(uri:String)=>void}> = ({onImageSele
 
     return (
         <View>
-            { imageUri != "" && <Image style={styles.image_picker_image} source={{uri:imageUri}}></Image>}
+            { imageUri != "" && <Image style={styles.image_picker_image} source={{uri:imageUri.toString()}}></Image>}
             { imageUri == "" && <Image style={styles.image_picker_image} source={require("../../assets/avatar.jpeg")}></Image>}
             
             <TouchableHighlight underlayColor={colors.clickBackground} onPress={openCamera} style={styles.image_picker_camera_btn}>

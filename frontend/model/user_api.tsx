@@ -32,7 +32,7 @@ const getuserById = async (id:String) => {
   if(res.data){
     user.email = res.data.email,
     user.password = res.data.password,
-    user.imageUri =res.data.imgUri
+    user.imageUri =res.data.imageUri
     }else{
     console.log("getUserById failed");
       
@@ -41,6 +41,8 @@ const getuserById = async (id:String) => {
 };
 
 const addUser = async (user: User) => {
+  console.log("AddUser "+user.email+" "+user.imageUri);
+  
   const res = await apiClient.post("/auth/register",{
     email:user.email,
     password:user.password,
@@ -84,13 +86,17 @@ const addUser = async (user: User) => {
       console.log("addGoogleUser fail");
     }};
 
-const updateUser = async (user: User,oldEmail:String) => {
-  if(user.email===res.data.email){
+const updateUser = async (user: User,oldEmail:String,accessToken:String,id:String) => {
+    console.log("UpdateUser "+user.email+" "+user.imageUri);
+    apiClient.addAsyncRequestTransform(request =>async () => {
+      request.headers['authorization'] = "barer " + accessToken
+    })
     const res = await apiClient.post("/user/edit",{
       oldEmail:oldEmail,
       newEmail:user.email,
       password:user.password,
-      imageUri:user.imageUri
+      imageUri:user.imageUri,
+      id:id
     });   
     if(res.ok){
       console.log("update User success");
@@ -98,7 +104,7 @@ const updateUser = async (user: User,oldEmail:String) => {
     }else {
       console.log("update User fail");
   }};
-}
+
 
 
 const loginUser =async (user:User) => {

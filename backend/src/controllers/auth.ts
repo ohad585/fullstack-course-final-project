@@ -38,6 +38,7 @@ import { RequestInfo, RequestInit } from 'node-fetch';
     const user = new User({
       email: email,
       password: encryptedPassword,
+      imageUri:imageUri
     });
     try {
       const newUser = await user.save();

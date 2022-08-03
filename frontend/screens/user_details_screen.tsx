@@ -1,5 +1,5 @@
 import React, { FC, useReducer, useState } from "react";
-import { View, Text, TouchableHighlight, Button } from "react-native";
+import { View, Text, TouchableHighlight, Button,Image,StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import EditUserDetailsScreen from "../screens/edit_user_details"
@@ -19,7 +19,7 @@ const UserDetails: FC<{ navigation: any; route: any }> = ({
     const getUser =async (id:String) => {
       const user =  await UserModel.getUserById(route.params._id)   
       console.log("getUser "+user.email);
-      setUserImgUri(user.imageUri)
+      setUserImgUri(user.imageUri.toString())
       setUserMail(user.email)
       setUserPassword(user.password)
      }
@@ -49,28 +49,39 @@ const UserDetails: FC<{ navigation: any; route: any }> = ({
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
        
-        <Text>user mail: {userInfo._id}</Text>
-        <Text>user Password: {userPassword}</Text>
-        <Text>user Img: {userImgUri}</Text>
+        <Text>user email: {userMail}</Text>
+        <View>
+        {userImgUri != "" && (
+          <Image
+            source={{ uri: userImgUri.toString() }}
+            style={styles.list_row_image}
+          ></Image>
+        )}
+        {userImgUri == "" && (
+          <Image
+            source={require("../assets/avatar.jpeg")}
+            style={styles.list_row_image}
+          ></Image>
+        )}
+        </View>
         <TouchableHighlight onPress={()=>navigation.navigate("Edit User Details",{user:userInfo})}>
           <Text>Edit My Details</Text>
           </TouchableHighlight>
         <TouchableHighlight onPress={()=>navigation.navigate("User Posts",{user:userInfo})}>
         <Text>My Posts</Text>     
         </TouchableHighlight>     
-       {/*  <NavigationContainer>
-            <UserDetailsStack.Navigator screenOptions={{ title: 'Apply to all' }}>
-            <UserDetailsStack.Screen name="Edit User Screen" component={EditUserDetailsScreen} />
-            </UserDetailsStack.Navigator>
-            </NavigationContainer> */}
-        <Text>user mail: {userMail}</Text>
-        <Text>user Password: {userPassword}</Text>
-        <Text>user Img: {userImgUri}</Text>
-        <TouchableHighlight onPress={()=>navigateToEditDetails()}>
-          <Text>edit</Text>
-        </TouchableHighlight>
+       
       </View>
     );
   };
+
+  const styles = StyleSheet.create({
+    list_row_image: {
+      height: 130,
+      width: 130,
+      margin: 10,
+      borderRadius: 15,
+    },
+  });
 
   export default UserDetails

@@ -26,19 +26,23 @@ const renewToken = async (userC:UserCredentials)=>{
 const getUserPosts=async(userID: String)=>{
   const res = await apiClient.get("/post/");
   let posts = Array<Post>()
-  if(res.data.id===userID){
+  
     res.data.forEach((element) => {
+      console.log(userID+" ELEMENT SENDER "+element.sender);
+      
+      if(element.sender==userID){
       const p:Post ={
-        id: element.sender,
-        text: element.text,
-        imageUrl: element.imageUri
+        senderID: element.sender,
+        text: element.message,
+        imageUrl: element.imageUrl,
+        postID:element._id
       }
       posts.push(p)
-    });
-  }else {
-    console.log("getUserPosts fail");
-    
-  }
+    }
+    else{
+
+      }
+    })
   return posts
 };
 
@@ -50,10 +54,13 @@ const getAllPosts = async () => {
   if(res.data){
     res.data.forEach((element) => {
       const p:Post ={
-        id: element.sender,
+        senderID: element.sender,
         text: element.message,
-        imageUrl: element.imgUrl
+        imageUrl: element.imageUrl,
+        postID:element._id
       }
+      console.log("Got post "+p.text+" "+p.imageUrl);
+      
       posts.push(p)
     });
   }else {
@@ -69,7 +76,7 @@ const addPost = async (p: Post,userC:UserCredentials) => {
     request.headers['authorization'] = "barer " + userC.access_token
   })
   const res = await apiClient.post("/post",{
-    sender: p.id,
+    sender: p.senderID,
     text: p.text,
    imageUrl: p.imageUrl
 
@@ -88,7 +95,7 @@ const addPost = async (p: Post,userC:UserCredentials) => {
 
 
   const uploadImage = async (imageUri:String,userC:UserCredentials)=> {
-    console.log("uploadImage")
+    console.log("uploadImage "+imageUri)
     const formData = new FormData()
     formData.append('file',{name: 'name', type:'image/jpeg', uri: imageUri})
     let url = '/file/post_file'
@@ -100,12 +107,17 @@ const addPost = async (p: Post,userC:UserCredentials) => {
         console.log("save failed " + res.problem)
     }
 }
-const updatePost = async (postID: String) => {
-  const post = await apiClient.get("/post/:"+postID,{}); 
-  const res = await apiClient.post("/post/edit",{
-      id:post.data.id,
-      text:post.data.text,
-      imageUri:post.data.imageUri
+const updatePost = async (p:Post,userC:UserCredentials) => {
+  apiClient.addAsyncRequestTransform(request =>async () => {
+    request.headers['authorization'] = "barer " + userC.access_token
+  })
+  console.log("updatePost "+p);
+  
+  const res = await apiClient.post("/post/updateMessage/",{
+      senderID:p.senderID,
+      text:p.text,
+      imageUri:p.imageUrl,
+      postID:p.postID
     });   
     if(res.ok){
       console.log("update Post success");
@@ -115,8 +127,11 @@ const updatePost = async (postID: String) => {
   }};
 
 
-const removePost=async (postID: String) =>{
-  const res = await apiClient.delete("/post/:"+postID,{});   
+const removePost=async (postID: String,access_token:String) =>{
+  apiClient.addAsyncRequestTransform(request =>async () => {
+    request.headers['authorization'] = "barer " + access_token
+  })
+  const res = await apiClient.delete("/post/"+postID,{});   
   if(res.ok){
     console.log("remove Post success");
     

@@ -18,10 +18,13 @@ const PostListRow: FC<{ post: Post; onItemClick: (id: String) => void }> = ({
   post,
   onItemClick,
 }) => {
+
+  console.log("PostListView "+post.imageUrl);
+  
   return (
     <TouchableHighlight
       onPress={() => {
-        onItemClick(post.id);
+        onItemClick(post.postID);
       }}
       underlayColor={COLORS.clickBackground}
     >
@@ -39,7 +42,7 @@ const PostListRow: FC<{ post: Post; onItemClick: (id: String) => void }> = ({
           ></Image>
         )}
         <View style={styles.list_row_text_container}>
-          <Text style={styles.list_row_id}>{post.id}</Text>
+          <Text style={styles.list_row_id}>{post.senderID}</Text>
           <Text style={styles.list_row_name}>{post.text}</Text>
         </View>
       </View>
@@ -133,7 +136,6 @@ const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
 
   const openPostDetails = (id: String) => {
     console.log("On press " + id);
-    navigation.navigate("Details", { id: id });
   };
   React.useEffect(() => {
     navigation.addListener("focus", () => {
@@ -160,7 +162,7 @@ const Home: FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
     <View style={styles.home_container}>
       <FlatList
         data={data}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.postID.toString()}
         renderItem={({ item }) => (
           <PostListRow post={item} onItemClick={openPostDetails} />
         )}

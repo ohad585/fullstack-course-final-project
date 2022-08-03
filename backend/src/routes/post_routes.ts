@@ -11,10 +11,9 @@ router.post('/',authenticate,createNewPost)
 router.get('/:id',authenticate,getPostById)
 
 router.delete('/:id',authenticate,deletePostById)
-router.delete('/',authenticate,deletePostById)
+//router.delete('/',authenticate,deletePostById)
 
 
-router.post('/updateMessage/:id',authenticate,updatePostMessageById)
 router.post('/updateMessage/',authenticate,updatePostMessageById)
 
 export = router

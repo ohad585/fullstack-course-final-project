@@ -29,12 +29,12 @@ const uploadImage = async (imageUri:String,userC:UserCredentials)=> {
   const url = await PostApi.uploadImage(imageUri,userC)
   return url
 }
-const updatePost = async (post: Post) => {
-  await PostApi.updatePost(post.postID)
+const updatePost = async (post: Post,usrc:UserCredentials) => {
+  await PostApi.updatePost(post,usrc)
 };
 
-const removePost = async (postID: String) => {
-  await PostApi.removePost(postID)
+const removePost = async (postID: String,access_token:String) => {
+  await PostApi.removePost(postID,access_token)
 };
 
 export default {

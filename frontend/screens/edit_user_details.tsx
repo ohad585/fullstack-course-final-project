@@ -12,28 +12,34 @@ const Edit_User: FC<{ navigation: any; route:any }> = ({navigation, route}) => {
     const [UserNameOld,setUserNameOld] = useState<String>("")
     const [Password,setPassword] = useState<String>("")
     const [imageUri,setImageUri] = useState<String>("")
-    const [userInfo,setUserInfo] = useState<UserCredentials>({_id:"",access_token:"",refresh_token:""});
+    const [userId,setUserId] = useState<String>("");
     const [accessToken,setAccessToken] = useState<String>("")
     const [refreshToken,setRefreshToken] = useState<String>("")
+    const [firstname,setFirstname] = useState<String>("")
     const getUser=async (userID:String)=>{
-      return UserModel.getUserById(userID)
+      const user = await UserModel.getUserById(userID)
+      setUserName(user.email)
+      setUserNameOld(user.email)
+      setPassword(user.password)
+      setImageUri(user.imageUri.toString())
+      setFirstname(user.email)
+      console.log("GETUSER "+user.imageUri);
+      
+      return user
   }
     React.useEffect(()=>{
       const usrc:UserCredentials = {
-        _id:route.params._id,
-        access_token:route.params.accessToken,
-        refresh_token:route.params.refreshToken
+        _id:route.params.user._id,
+        access_token:route.params.user.access_token,
+        refresh_token:route.params.user.refresh_token
       }
       console.log(usrc);
-      if(route.params?.email){
-        setUserName(route.params.email)
-        setUserNameOld(route.params.email)
-        setPassword(route.params.password)
-        setImageUri(route.params.imageUrl)
-        setAccessToken(route.params.accessToken)
-        setRefreshToken(route.params.refreshToken)
-      }
-    },route.params?.email)
+        const user = getUser(usrc._id)
+        setUserId(usrc._id)
+        setAccessToken(usrc.access_token)
+        setRefreshToken(usrc.refresh_token)
+      
+    },[route.params?.user])
 
     const onSave = async ()=>{
       setIsLoading(true)
@@ -50,9 +56,9 @@ const Edit_User: FC<{ navigation: any; route:any }> = ({navigation, route}) => {
           console.log("saving image : " + url) 
       }
       
-        await UserModel.updateUser(user,UserNameOld)
+        await UserModel.updateUser(user,UserNameOld,accessToken,userId)
         setIsLoading(false)
-        navigation.goBack()
+        navigation.navigate("Home",{_id:userId,accessToken:accessToken,refreshToken:refreshToken})
       }
     }
 
@@ -67,11 +73,9 @@ const Edit_User: FC<{ navigation: any; route:any }> = ({navigation, route}) => {
       <ScrollView>
       <View style={styles.container}>
       <View style={styles.image} >
-        <CustomImagePicker onImageSelected={onImageSelected}></CustomImagePicker>
+        <CustomImagePicker image={imageUri} onImageSelected={onImageSelected}></CustomImagePicker>
       </View>
-      <TextInput style={styles.textInput} onChangeText={setUserName} placeholder={UserName.toString()} keyboardType="default"></TextInput>
-      <TextInput style={styles.textInput} onChangeText={setPassword} placeholder={Password.toString()} keyboardType="default"></TextInput>
-
+      <TextInput style={styles.textInput} onChangeText={setUserName} placeholder={firstname.toString()} keyboardType="default"></TextInput>
       <TouchableHighlight
         underlayColor={COLORS.clickBackground} 
         onPress={()=>{ 

@@ -77,35 +77,41 @@ export const findUserByEmail =async (req: Request, res: Response) => {
  * @returns User
  */
  export const editUser =async (req: Request, res: Response) => {
-  const oldEmail = req.params.oldEmail;
-  const newEmail = req.params.newEmail;
-  const password = req.params.passowrd
-  const imageUri = req.params.imageUri
+  const oldEmail = req.body.oldEmail;
+  const newEmail = req.body.newEmail;
+  const password = req.body.passowrd
+  const imageUri = req.body.imageUri
+  const id = req.body.id
 
-  console.log("edditing user " + req.params.id);
+  console.log("edditing user " + req.body.oldEmail+" "+imageUri+" "+id);
 if (oldEmail == null || oldEmail == undefined) {
   return res.status(400).send({ err: "no email provided" });
 }
 
 try {
-  const user = await UserModel.findById(oldEmail);
+  const user = await UserModel.findById(id);
   if (user == null) {
+    console.log("User is null editUser")
     res.status(400).send({
       err: "user doesnot exists",
     });
   } else {
     user.email=newEmail
-    //encrypt password
-    const salt = await bcrypt.genSalt(10);
-    const encryptedPassword = await bcrypt.hash(password, salt);
-    user.passowrd=encryptedPassword
+    console.log("TESTTTTT");
+    
+   
     user.imageUri=imageUri
-    const newUser = await user.save() 
+    //const newUser = await user.update() 
+    console.log("+++++ "+user._id);
+    
+    await UserModel.updateOne({"_id":user._id},{$set:{ 'imageUri':imageUri,'email':newEmail}})
     res.status(200).send({
-      _id:newUser._id
+      _id:user._id
     });
   }
 } catch (err) {
+  console.log("EditUser Error " +err);
+  
   res.status(400).send({
     err: err.message,
   });

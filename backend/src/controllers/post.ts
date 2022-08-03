@@ -61,6 +61,7 @@ export const createNewPost = async (req: Request | CtrlReq, res: Response | Ctrl
   const post = new Post({
     message: req.body.text,
     sender: sender,
+    imageUrl:req.body.imageUrl
   });
 
   try {
@@ -115,17 +116,23 @@ export const deletePostById = async (req: Request, res: Response) => {
 // }
 
 export const updatePostMessageById = async (req:Request, res:Response)=>{
-  console.log('updatePostById id=' + req.params.id)
-  const id = req.params.id
-  const update= req.body.update
+  const text= req.body.text
+  const id=req.body.postID
+  const img = req.body.imageUri
+  console.log("Updatepost "+text +" "+img);
+  
   if (id == null || id == undefined){
+    console.log("ID IS NULL");
+    
       return res.status(400).send({'err':'no id provided'})
   }
 
   try{
-      await Post.updateOne({"_id":id},{$set:{ 'message':update}})
+      await Post.updateOne({"_id":id},{$set:{ 'message':text,"imageUrl":img}})
       res.status(200).send()
   }catch(err){
+    console.log(err);
+    
       res.status(400).send({
           'err': err.message
       })
